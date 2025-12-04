@@ -16,6 +16,10 @@ class HomeViewModel {
     coordinator.goToJobPrediction();
   }
 
+  void goToSocialFeed() {
+    coordinator.goToFeed();
+  }
+
   void logout() {
     coordinator.goToLogin();
   }

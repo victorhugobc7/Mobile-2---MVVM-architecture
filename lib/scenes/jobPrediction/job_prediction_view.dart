@@ -42,9 +42,9 @@ class JobPredictionView extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       child: ActionCard.instantiate(
                         viewModel: ActionCardViewModel(
-                          title: 'Previsor de Salário',
-                          content: 'Insira os detalhes da vaga para obter uma estimativa salarial baseada no nosso modelo de predição.',
-                          icon: Icons.monetization_on,
+                          headerIcon: Icons.monetization_on,
+                          headerTitle: 'Previsor de Salário',
+                          description: 'Insira os detalhes da vaga para obter uma estimativa salarial baseada no nosso modelo de predição.',
                         ),
                       ),
                     ),

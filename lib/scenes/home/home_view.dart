@@ -48,6 +48,17 @@ class HomeView extends StatelessWidget {
               onTap: viewModel.goToJobPrediction,
             ),
 
+            const SizedBox(height: 12),
+
+            _buildNavigationCard(
+              context,
+              title: 'Rede Social Profissional',
+              description: 'Conecte-se com profissionais e acompanhe suas publicações',
+              icon: Icons.people,
+              color: navy_700,
+              onTap: viewModel.goToSocialFeed,
+            ),
+
             const Spacer(),
 
             Center(
