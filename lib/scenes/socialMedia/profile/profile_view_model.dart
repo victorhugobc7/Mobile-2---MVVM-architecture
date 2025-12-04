@@ -158,7 +158,33 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void shareProfile() {
-    // Share profile
+  }
+
+  void onSearchTapped() {
+  }
+
+  void onConnectTapped() {
+  }
+
+  void onSendMessageTapped() {
+  }
+
+  void onAddSectionTapped() {
+  }
+
+  void onEditAboutTapped() {
+  }
+
+  void onAddExperienceTapped() {
+  }
+
+  void onEditExperienceTapped() {
+  }
+
+  void onAddEducationTapped() {
+  }
+
+  void onAddSkillsTapped() {
   }
 
   Future<void> calculateSalaryPrediction() async {

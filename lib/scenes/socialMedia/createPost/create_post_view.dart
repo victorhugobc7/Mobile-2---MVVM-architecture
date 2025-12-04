@@ -229,17 +229,17 @@ class CreatePostView extends StatelessWidget {
                 _buildToolButton(
                   icon: Icons.videocam,
                   label: 'Vídeo',
-                  onTap: () {},
+                  onTap: vm.onAddVideoTapped,
                 ),
                 _buildToolButton(
                   icon: Icons.event,
                   label: 'Evento',
-                  onTap: () {},
+                  onTap: vm.onAddEventTapped,
                 ),
                 _buildToolButton(
                   icon: Icons.article,
                   label: 'Artigo',
-                  onTap: () {},
+                  onTap: vm.onAddArticleTapped,
                 ),
               ],
             ),

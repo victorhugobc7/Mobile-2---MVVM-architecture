@@ -54,7 +54,7 @@ class ProfileView extends StatelessWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.search, color: white),
-          onPressed: () {},
+          onPressed: vm.onSearchTapped,
         ),
         IconButton(
           icon: const Icon(Icons.settings, color: white),
@@ -178,7 +178,7 @@ class ProfileView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: vm.onConnectTapped,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: blue_500,
                           shape: RoundedRectangleBorder(
@@ -195,7 +195,7 @@ class ProfileView extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: vm.onAddSectionTapped,
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: blue_500),
                           shape: RoundedRectangleBorder(
@@ -362,7 +362,7 @@ class ProfileView extends StatelessWidget {
               if (vm.isEditing)
                 IconButton(
                   icon: const Icon(Icons.edit, size: 20, color: gray_600),
-                  onPressed: () {},
+                  onPressed: vm.onEditAboutTapped,
                 ),
             ],
           ),
@@ -405,11 +405,11 @@ class ProfileView extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.add, size: 20, color: gray_600),
-                      onPressed: () {},
+                      onPressed: vm.onAddExperienceTapped,
                     ),
                     IconButton(
                       icon: const Icon(Icons.edit, size: 20, color: gray_600),
-                      onPressed: () {},
+                      onPressed: vm.onEditExperienceTapped,
                     ),
                   ],
                 ),
@@ -512,7 +512,7 @@ class ProfileView extends StatelessWidget {
               if (vm.isEditing)
                 IconButton(
                   icon: const Icon(Icons.add, size: 20, color: gray_600),
-                  onPressed: () {},
+                  onPressed: vm.onAddEducationTapped,
                 ),
             ],
           ),
@@ -596,7 +596,7 @@ class ProfileView extends StatelessWidget {
               if (vm.isEditing)
                 IconButton(
                   icon: const Icon(Icons.add, size: 20, color: gray_600),
-                  onPressed: () {},
+                  onPressed: vm.onAddSkillsTapped,
                 ),
             ],
           ),

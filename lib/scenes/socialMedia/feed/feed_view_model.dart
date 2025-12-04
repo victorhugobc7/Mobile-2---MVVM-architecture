@@ -108,6 +108,30 @@ class FeedViewModel extends ChangeNotifier {
     }
   }
 
+  void onCommentTapped(String postId) {
+    // TODO: Navigate to comments or open comment sheet
+  }
+
+  void onShareTapped(String postId) {
+    // TODO: Open share options
+  }
+
+  void onSendTapped(String postId) {
+    // TODO: Open send/message dialog
+  }
+
+  void onMoreOptionsTapped(String postId) {
+    // TODO: Show more options menu
+  }
+
+  void onSearchTapped() {
+    // TODO: Navigate to search screen
+  }
+
+  void onHomeTapped() {
+    // Already on feed, no action needed
+  }
+
   void goToProfile() {
     coordinator.goToProfile();
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../resources/shared/colors.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/Components/FilterChip/filter_chip.dart';
+import '../../../DesignSystem/Components/FilterChip/filter_chip_view_model.dart';
 import 'jobs_view_model.dart';
 
 class JobsView extends StatelessWidget {
@@ -34,7 +36,7 @@ class JobsView extends StatelessWidget {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.tune, color: gray_600),
-                  onPressed: () {},
+                  onPressed: vm.onSettingsTapped,
                 ),
               ],
             ),
@@ -147,20 +149,12 @@ class JobsView extends StatelessWidget {
             final isSelected = vm.selectedFilter == filter;
             return Padding(
               padding: const EdgeInsets.only(right: 8),
-              child: FilterChip(
-                label: Text(filter),
-                selected: isSelected,
-                onSelected: (_) => vm.setFilter(filter),
-                backgroundColor: white,
-                selectedColor: blue_100,
-                labelStyle: TextStyle(
-                  color: isSelected ? blue_600 : gray_600,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              child: StyledFilterChip.instantiate(
+                viewModel: FilterChipViewModel(
+                  label: filter,
+                  isSelected: isSelected,
+                  onSelected: (_) => vm.setFilter(filter),
                 ),
-                side: BorderSide(
-                  color: isSelected ? blue_500 : gray_400,
-                ),
-                checkmarkColor: blue_600,
               ),
             );
           }).toList(),

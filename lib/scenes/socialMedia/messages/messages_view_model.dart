@@ -126,6 +126,8 @@ class MessagesViewModel extends ChangeNotifier {
   }
 
   void composeNewMessage() {
-    // Open new message screen
+  }
+
+  void onFilterTapped() {
   }
 }

@@ -172,10 +172,12 @@ class JobsViewModel extends ChangeNotifier {
   }
 
   void applyToJob(String id) {
-    // Apply to job logic
   }
 
   void goBack() {
     coordinator.pop();
+  }
+
+  void onSettingsTapped() {
   }
 }

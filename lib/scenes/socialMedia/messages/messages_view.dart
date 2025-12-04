@@ -47,7 +47,7 @@ class MessagesView extends StatelessWidget {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.filter_list, color: gray_600),
-                  onPressed: () {},
+                  onPressed: vm.onFilterTapped,
                 ),
                 IconButton(
                   icon: const Icon(Icons.edit_square, color: gray_600),

@@ -26,7 +26,6 @@ class CreatePostViewModel extends ChangeNotifier {
   }
 
   void selectImage() {
-    // Simulate image selection
     _selectedImage = 'selected_image.jpg';
     notifyListeners();
   }
@@ -42,18 +41,25 @@ class CreatePostViewModel extends ChangeNotifier {
     _isPosting = true;
     notifyListeners();
 
-    // Simulate posting delay
     await Future.delayed(const Duration(seconds: 1));
 
     _isPosting = false;
     notifyListeners();
 
-    // Go back to feed
     coordinator.pop();
   }
 
   void goBack() {
     coordinator.pop();
+  }
+
+  void onAddVideoTapped() {
+  }
+
+  void onAddEventTapped() {
+  }
+
+  void onAddArticleTapped() {
   }
 
   @override

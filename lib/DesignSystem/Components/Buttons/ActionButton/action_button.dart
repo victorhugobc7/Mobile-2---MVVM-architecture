@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'action_button_view_model.dart';
-import '../../../../resources/shared/colors.dart';
-import '../../../../resources/shared/styles.dart';
-import '../../../../resources/shared/spacing.dart';
+import '../../../shared/colors.dart';
+import '../../../shared/styles.dart';
+import '../../../shared/spacing.dart';
 
 class ActionButton extends StatelessWidget {
   final ActionButtonViewModel viewModel;
@@ -15,115 +15,74 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double horizontalPadding = large;
-    double verticalPadding = small;
-    double iconSize = large;
-    TextStyle buttonTextStyle = buttonStyle;
-    Color buttonColor = blue_400;
-    Color iconBackgroundColor = blue_700;
+    final buttonColor = _getButtonColor();
+    final textColor = _getTextColor();
+    final padding = _getPadding();
 
-    switch (viewModel.size) {
-      case ActionButtonSize.large:
-        buttonTextStyle = buttonStyle;
-        iconSize = large;
-        break;
-      case ActionButtonSize.medium:
-        buttonTextStyle = buttonStyle;
-        iconSize = large;
-        break;
-      case ActionButtonSize.small:
-        buttonTextStyle = buttonStyle;
-        horizontalPadding = 16;
-        iconSize = small;
-        break;
-    }
-
-    switch (viewModel.style) {
-      case ActionButtonStyle.primary:
-        buttonColor = blue_400;
-        iconBackgroundColor = blue_700;
-        break;
-      case ActionButtonStyle.secondary:
-        buttonColor = navy_700;
-        iconBackgroundColor = navy_700;
-        break;
-      case ActionButtonStyle.tertiary:
-        buttonColor = mint_dark;
-        iconBackgroundColor = mint_dark;
-        break;
-    }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ElevatedButton(
-                  onPressed: viewModel.onPressed,
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: buttonColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                      textStyle: buttonTextStyle,
-                      padding: EdgeInsets.symmetric(
-                          vertical: verticalPadding,
-                          horizontal: horizontalPadding
-                          ),
-                      ),
-                  child: Text(viewModel.text, style: buttonTextStyle,)
-                  ),
-          Stack(
-              children: [
-                Container(
-                  width: iconSize,
-                  height: iconSize,
-                  color: iconBackgroundColor,
-                  padding: EdgeInsets.symmetric(
-                      vertical: verticalPadding,
-                      horizontal: horizontalPadding
-                  ),
-                ),
-                Icon(
-                  viewModel.icon,
-                  size: iconSize,
-                  color: white,
-                ),
-              ]
-          ),
-    ]
-    );
-
-
-      /* ElevatedButton(
+    return ElevatedButton(
       onPressed: viewModel.onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: buttonColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        textStyle: buttonTextStyle,
-        padding: EdgeInsets.symmetric(
-          vertical: verticalPadding,
-          horizontal: horizontalPadding
-        )
+        foregroundColor: textColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+        padding: padding,
+        elevation: 0,
       ),
-      child: viewModel.icon !=null ?
-      Row(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              Container(width: iconSize, height: iconSize, color: iconBackgroundColor,),
-              Icon(
-                viewModel.icon,
-                size: iconSize,
-                color: white,
-              ),
-            ],
+          if (viewModel.showIcon && viewModel.icon != null) ...[
+            Icon(
+              viewModel.icon,
+              size: 18,
+              color: textColor,
+            ),
+            SizedBox(width: doubleXS),
+          ],
+          Text(
+            viewModel.text.toUpperCase(),
+            style: buttonStyle.copyWith(color: textColor),
           ),
-          Text(viewModel.text, style: buttonTextStyle,)
         ],
-      ) :
-      Text(viewModel.text, style: buttonTextStyle),
+      ),
     );
   }
 
+  Color _getButtonColor() {
+    switch (viewModel.style) {
+      case ActionButtonStyle.primary:
+        return blue_500;
+      case ActionButtonStyle.secondary:
+        return navy_700;
+      case ActionButtonStyle.tertiary:
+        return mint_dark;
+      case ActionButtonStyle.warning:
+        return yellow_marigold;
+      case ActionButtonStyle.negative:
+        return red_error;
+    }
+  }
 
-       */
+  Color _getTextColor() {
+    switch (viewModel.style) {
+      case ActionButtonStyle.warning:
+        return primaryInk;
+      default:
+        return white;
+    }
+  }
+
+  EdgeInsets _getPadding() {
+    switch (viewModel.size) {
+      case ActionButtonSize.large:
+        return EdgeInsets.symmetric(horizontal: large, vertical: small);
+      case ActionButtonSize.medium:
+        return EdgeInsets.symmetric(horizontal: medium, vertical: extraSmall);
+      case ActionButtonSize.small:
+        return EdgeInsets.symmetric(horizontal: small, vertical: doubleXS);
+    }
   }
 }

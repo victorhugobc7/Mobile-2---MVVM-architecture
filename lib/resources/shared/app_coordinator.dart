@@ -16,11 +16,15 @@ class AppCoordinator {
   NavigatorState? get _navigator => navigatorKey.currentState;
 
   Widget startApp() {
-    return goToLogin();
+    return goToFeedAsHome();
   }
 
   Widget goToLogin() {
     return LoginFactory.make(coordinator: this);
+  }
+
+  Widget goToFeedAsHome() {
+    return FeedFactory.make(coordinator: this);
   }
 
   void goToHome(String name, String address) {

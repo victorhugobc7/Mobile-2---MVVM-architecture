@@ -34,7 +34,7 @@ class NetworkView extends StatelessWidget {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.search, color: gray_600),
-                  onPressed: () {},
+                  onPressed: vm.onSearchTapped,
                 ),
               ],
             ),
@@ -140,7 +140,7 @@ class NetworkView extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: vm.onViewAllInvitationsTapped,
                   child: const Text(
                     'Ver todos',
                     style: TextStyle(color: blue_500),

@@ -150,4 +150,10 @@ class NetworkViewModel extends ChangeNotifier {
   void goToFeed() {
     coordinator.pop();
   }
+
+  void onSearchTapped() {
+  }
+
+  void onViewAllInvitationsTapped() {
+  }
 }
