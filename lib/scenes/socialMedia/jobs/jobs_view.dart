@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/shared/styles.dart';
+import '../../../DesignSystem/shared/spacing.dart';
 import '../../../DesignSystem/Components/FilterChip/filter_chip.dart';
 import '../../../DesignSystem/Components/FilterChip/filter_chip_view_model.dart';
 import 'jobs_view_model.dart';
@@ -25,13 +27,9 @@ class JobsView extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back, color: primaryInk),
                 onPressed: vm.goBack,
               ),
-              title: const Text(
+              title: Text(
                 'Vagas',
-                style: TextStyle(
-                  color: primaryInk,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               actions: [
                 IconButton(
@@ -68,7 +66,7 @@ class JobsView extends StatelessWidget {
             child: InkWell(
               onTap: () => vm.setTab(0),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: small),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -80,7 +78,7 @@ class JobsView extends StatelessWidget {
                 child: Text(
                   'Recomendadas',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: labelTextStyle.copyWith(
                     color: vm.currentTab == 0 ? blue_500 : gray_600,
                     fontWeight: vm.currentTab == 0 ? FontWeight.bold : FontWeight.normal,
                   ),
@@ -92,7 +90,7 @@ class JobsView extends StatelessWidget {
             child: InkWell(
               onTap: () => vm.setTab(1),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: small),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -106,25 +104,22 @@ class JobsView extends StatelessWidget {
                   children: [
                     Text(
                       'Salvas',
-                      style: TextStyle(
+                      style: labelTextStyle.copyWith(
                         color: vm.currentTab == 1 ? blue_500 : gray_600,
                         fontWeight: vm.currentTab == 1 ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                     if (vm.savedJobs.isNotEmpty)
                       Container(
-                        margin: const EdgeInsets.only(left: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        margin: EdgeInsets.only(left: doubleXS),
+                        padding: EdgeInsets.symmetric(horizontal: doubleXS, vertical: 2),
                         decoration: BoxDecoration(
                           color: vm.currentTab == 1 ? blue_500 : gray_400,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           vm.savedJobs.length.toString(),
-                          style: const TextStyle(
-                            color: white,
-                            fontSize: 12,
-                          ),
+                          style: label2Regular.copyWith(color: white),
                         ),
                       ),
                   ],
@@ -140,15 +135,15 @@ class JobsView extends StatelessWidget {
   Widget _buildFilters(JobsViewModel vm) {
     return Container(
       color: white,
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: extraSmall),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: small),
         child: Row(
           children: vm.filters.map((filter) {
             final isSelected = vm.selectedFilter == filter;
             return Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: EdgeInsets.only(right: doubleXS),
               child: StyledFilterChip.instantiate(
                 viewModel: FilterChipViewModel(
                   label: filter,
@@ -168,7 +163,7 @@ class JobsView extends StatelessWidget {
       return _buildEmptyState('Nenhuma vaga encontrada', 'Tente alterar os filtros');
     }
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: doubleXS),
       itemCount: vm.jobs.length,
       itemBuilder: (context, index) {
         return _buildJobCard(vm.jobs[index], vm);
@@ -181,7 +176,7 @@ class JobsView extends StatelessWidget {
       return _buildEmptyState('Nenhuma vaga salva', 'Salve vagas para ver aqui');
     }
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: doubleXS),
       itemCount: vm.savedJobs.length,
       itemBuilder: (context, index) {
         return _buildJobCard(vm.savedJobs[index], vm);
@@ -194,20 +189,16 @@ class JobsView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.work_off_outlined, size: 80, color: gray_400),
-          const SizedBox(height: 16),
+          const Icon(Icons.work_off_outlined, size: 80, color: gray_400),
+          SizedBox(height: small),
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: gray_600,
-            ),
+            style: labelTextStyle.copyWith(color: gray_600, fontSize: 18),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: doubleXS),
           Text(
             subtitle,
-            style: const TextStyle(fontSize: 14, color: gray_500),
+            style: label2Regular.copyWith(color: gray_500),
           ),
         ],
       ),
@@ -217,8 +208,8 @@ class JobsView extends StatelessWidget {
   Widget _buildJobCard(JobModel job, JobsViewModel vm) {
     final isSaved = vm.isJobSaved(job.id);
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.symmetric(horizontal: 0, vertical: tripleXS),
+      padding: EdgeInsets.all(small),
       color: white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,34 +226,24 @@ class JobsView extends StatelessWidget {
                 ),
                 child: const Icon(Icons.business, color: gray_600, size: 28),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: extraSmall),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       job.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: blue_600,
-                      ),
+                      style: labelTextStyle.copyWith(color: blue_600, fontSize: 16),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       job.company,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: primaryInk,
-                      ),
+                      style: label2Regular.copyWith(color: primaryInk, fontSize: 14),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       job.location,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: gray_600,
-                      ),
+                      style: label2Regular.copyWith(color: gray_600, fontSize: 13),
                     ),
                   ],
                 ),
@@ -276,7 +257,7 @@ class JobsView extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -287,25 +268,25 @@ class JobsView extends StatelessWidget {
                 _buildTag('Candidatura simplificada', mint_dark),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           Row(
             children: [
-              Icon(Icons.schedule, size: 14, color: gray_500),
-              const SizedBox(width: 4),
+              const Icon(Icons.schedule, size: 14, color: gray_500),
+              SizedBox(width: tripleXS),
               Text(
                 'Publicada há ${job.postedAgo}',
-                style: const TextStyle(fontSize: 12, color: gray_500),
+                style: label2Regular.copyWith(color: gray_500),
               ),
-              const SizedBox(width: 16),
-              Icon(Icons.people_outline, size: 14, color: gray_500),
-              const SizedBox(width: 4),
+              SizedBox(width: small),
+              const Icon(Icons.people_outline, size: 14, color: gray_500),
+              SizedBox(width: tripleXS),
               Text(
                 '${job.applicants} candidatos',
-                style: const TextStyle(fontSize: 12, color: gray_500),
+                style: label2Regular.copyWith(color: gray_500),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           Row(
             children: [
               Expanded(
@@ -317,9 +298,9 @@ class JobsView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Candidatar-se',
-                    style: TextStyle(color: blue_500),
+                    style: label2Regular.copyWith(color: blue_500),
                   ),
                 ),
               ),
@@ -332,18 +313,14 @@ class JobsView extends StatelessWidget {
 
   Widget _buildTag(String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: extraSmall, vertical: tripleXS),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 12,
-          color: color,
-          fontWeight: FontWeight.w500,
-        ),
+        style: label2Regular.copyWith(color: color, fontWeight: FontWeight.w500),
       ),
     );
   }

@@ -84,16 +84,16 @@ const TextStyle label1Semibold = TextStyle(
 
 const TextStyle label2Regular = TextStyle(
   fontFamily: primaryFont,
-  fontSize: 10,
-  height: 16,
+  fontSize: 12,
+  height: 1.5,
   fontWeight: FontWeight.w400,
   color: normalPrimaryBaseColorLight,
 );
 
 const TextStyle label2Semibold = TextStyle(
   fontFamily: primaryFont,
-  fontSize: 10,
-  height: 16,
+  fontSize: 12,
+  height: 1.5,
   fontWeight: FontWeight.w600,
   color: normalPrimaryBaseColorLight,
 );
@@ -121,14 +121,14 @@ const TextStyle button3Semibold = TextStyle(
 
 const TextStyle navbarSmallTitle = TextStyle(
   fontSize: 18,
-  height: 24,
+  height: 1.33,
   fontWeight: FontWeight.w600,
   color: normalPrimaryBaseColorLight,
 );
 
 const TextStyle navbarLargeTitle = TextStyle(
   fontSize: 34,
-  height: 38,
+  height: 1.12,
   fontWeight: FontWeight.w700,
   color: normalPrimaryBaseColorLight,
 );

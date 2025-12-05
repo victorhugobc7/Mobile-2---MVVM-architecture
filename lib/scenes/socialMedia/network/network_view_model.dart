@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import 'network_service.dart';
 
 class ConnectionModel {
   final String id;
@@ -37,13 +38,14 @@ class InvitationModel {
 
 class NetworkViewModel extends ChangeNotifier {
   final AppCoordinator coordinator;
+  final NetworkService service;
 
   List<ConnectionModel> _suggestions = [];
   List<InvitationModel> _invitations = [];
   int _connectionsCount = 0;
   bool _isLoading = false;
 
-  NetworkViewModel({required this.coordinator}) {
+  NetworkViewModel({required this.coordinator, required this.service}) {
     _loadData();
   }
 
@@ -52,73 +54,17 @@ class NetworkViewModel extends ChangeNotifier {
   int get connectionsCount => _connectionsCount;
   bool get isLoading => _isLoading;
 
-  void _loadData() {
+  Future<void> _loadData() async {
     _isLoading = true;
     notifyListeners();
 
-    _connectionsCount = 487;
-
-    _invitations = [
-      InvitationModel(
-        id: '1',
-        name: 'Carlos Mendes',
-        title: 'Engenheiro de Software na Google',
-        avatar: 'CM',
-        timeAgo: '2 dias',
-      ),
-      InvitationModel(
-        id: '2',
-        name: 'Fernanda Lima',
-        title: 'Data Scientist na Microsoft',
-        avatar: 'FL',
-        timeAgo: '5 dias',
-      ),
-    ];
-
-    _suggestions = [
-      ConnectionModel(
-        id: '1',
-        name: 'Roberto Alves',
-        title: 'Tech Lead na Amazon',
-        avatar: 'RA',
-        mutualConnections: '15 conexões em comum',
-      ),
-      ConnectionModel(
-        id: '2',
-        name: 'Juliana Ferreira',
-        title: 'Product Designer na Nubank',
-        avatar: 'JF',
-        mutualConnections: '23 conexões em comum',
-      ),
-      ConnectionModel(
-        id: '3',
-        name: 'Marcos Paulo',
-        title: 'Backend Developer na Itaú',
-        avatar: 'MP',
-        mutualConnections: '8 conexões em comum',
-      ),
-      ConnectionModel(
-        id: '4',
-        name: 'Beatriz Santos',
-        title: 'Mobile Developer na iFood',
-        avatar: 'BS',
-        mutualConnections: '12 conexões em comum',
-      ),
-      ConnectionModel(
-        id: '5',
-        name: 'Lucas Ribeiro',
-        title: 'DevOps Engineer na Mercado Livre',
-        avatar: 'LR',
-        mutualConnections: '19 conexões em comum',
-      ),
-      ConnectionModel(
-        id: '6',
-        name: 'Amanda Costa',
-        title: 'Frontend Developer na Globo',
-        avatar: 'AC',
-        mutualConnections: '7 conexões em comum',
-      ),
-    ];
+    try {
+      _suggestions = await service.fetchSuggestions();
+      _invitations = await service.fetchInvitations();
+      _connectionsCount = await service.getConnectionsCount();
+    } catch (e) {
+      // Handle error
+    }
 
     _isLoading = false;
     notifyListeners();

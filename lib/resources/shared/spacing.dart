@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 const double tripleXS = 4;
 const double doubleXS = 8;
 const double extraSmall = 12;

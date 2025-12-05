@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import 'notifications_service.dart';
 
 class NotificationModel {
   final String id;
@@ -23,11 +24,12 @@ class NotificationModel {
 
 class NotificationsViewModel extends ChangeNotifier {
   final AppCoordinator coordinator;
+  final NotificationsService service;
 
   List<NotificationModel> _notifications = [];
   bool _isLoading = false;
 
-  NotificationsViewModel({required this.coordinator}) {
+  NotificationsViewModel({required this.coordinator, required this.service}) {
     _loadNotifications();
   }
 
@@ -35,75 +37,15 @@ class NotificationsViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   int get unreadCount => _notifications.where((n) => !n.isRead).length;
 
-  void _loadNotifications() {
+  Future<void> _loadNotifications() async {
     _isLoading = true;
     notifyListeners();
 
-    _notifications = [
-      NotificationModel(
-        id: '1',
-        type: 'like',
-        title: 'Maria Silva curtiu sua publicação',
-        description: '"Acabei de concluir minha certificação..."',
-        avatar: 'MS',
-        timeAgo: '5 min',
-        isRead: false,
-      ),
-      NotificationModel(
-        id: '2',
-        type: 'connection',
-        title: 'João Santos aceitou seu convite',
-        description: 'Vocês agora estão conectados',
-        avatar: 'JS',
-        timeAgo: '1h',
-        isRead: false,
-      ),
-      NotificationModel(
-        id: '3',
-        type: 'comment',
-        title: 'Ana Costa comentou na sua publicação',
-        description: '"Parabéns pela conquista! Continue assim!"',
-        avatar: 'AC',
-        timeAgo: '2h',
-        isRead: false,
-      ),
-      NotificationModel(
-        id: '4',
-        type: 'job',
-        title: 'Nova vaga para você',
-        description: 'Desenvolvedor Flutter Senior - Tech Corp',
-        avatar: '💼',
-        timeAgo: '3h',
-        isRead: true,
-      ),
-      NotificationModel(
-        id: '5',
-        type: 'mention',
-        title: 'Pedro Oliveira mencionou você',
-        description: '"...concordo com @VictorHugo sobre isso"',
-        avatar: 'PO',
-        timeAgo: '5h',
-        isRead: true,
-      ),
-      NotificationModel(
-        id: '6',
-        type: 'like',
-        title: 'Roberto Alves e mais 23 pessoas curtiram',
-        description: 'Sua publicação sobre Flutter',
-        avatar: 'RA',
-        timeAgo: '1d',
-        isRead: true,
-      ),
-      NotificationModel(
-        id: '7',
-        type: 'connection',
-        title: 'Juliana Ferreira quer se conectar',
-        description: 'Product Designer na Nubank',
-        avatar: 'JF',
-        timeAgo: '2d',
-        isRead: true,
-      ),
-    ];
+    try {
+      _notifications = await service.fetchNotifications();
+    } catch (e) {
+      // Handle error
+    }
 
     _isLoading = false;
     notifyListeners();

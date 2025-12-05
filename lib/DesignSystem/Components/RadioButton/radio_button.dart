@@ -17,15 +17,7 @@ class _RadioButtonState<T> extends State<RadioButton<T>> {
   @override
   Widget build(BuildContext context) {
     final vm = widget.viewModel;
-    const black = Colors.black;
-
-    final isSelected = vm.isSelected;
     final isDisabled = vm.isDisabled;
-
-    // Outer ring color (radio border)
-    Color ringColor = isDisabled ? gray_500 : (isSelected ? blue_500 : Colors.black54);
-    // Label color
-    Color textColor = isDisabled ? gray_500 : black;
 
     return MouseRegion(
   onEnter: (_) => setState(() => _isHovered = true),

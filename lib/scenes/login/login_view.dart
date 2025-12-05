@@ -43,10 +43,19 @@ class _LoginViewState extends State<LoginView> {
                 'lib/DesignSystem/Assets/ic_launcher_APP.svg',
                 width: 80,
                 height: 80,
+                placeholderBuilder: (context) => Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: blue_500,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Icon(Icons.work, color: white, size: 48),
+                ),
               ),
               SizedBox(height: large),
               
-              Text('Login', style: heading4Regular),
+              Text('Login', style: title4.copyWith(color: primaryInk)),
               SizedBox(height: extraLarge),
 
               StyledInputField.instantiate(

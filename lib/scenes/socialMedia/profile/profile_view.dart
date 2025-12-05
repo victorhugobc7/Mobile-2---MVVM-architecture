@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../resources/shared/colors.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/shared/styles.dart';
+import '../../../DesignSystem/shared/spacing.dart';
+import '../../../DesignSystem/Components/Avatar/avatar.dart';
+import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
 import 'profile_view_model.dart';
 
 class ProfileView extends StatelessWidget {
@@ -30,7 +34,7 @@ class ProfileView extends StatelessWidget {
                             _buildExperienceSection(vm),
                             _buildEducationSection(vm),
                             _buildSkillsSection(vm),
-                            const SizedBox(height: 24),
+                            SizedBox(height: medium),
                           ],
                         ),
                       ),
@@ -86,29 +90,23 @@ class ProfileView extends StatelessWidget {
             children: [
               Container(height: 60, color: blue_600),
               Positioned(
-                left: 16,
+                left: small,
                 bottom: -40,
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: white, width: 4),
                   ),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: navy_700,
-                    child: Text(
-                      profile.avatar,
-                      style: const TextStyle(
-                        color: white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 28,
-                      ),
+                  child: Avatar.instantiate(
+                    viewModel: AvatarViewModel(
+                      initials: profile.avatar,
+                      size: 100,
                     ),
                   ),
                 ),
               ),
               Positioned(
-                right: 16,
+                right: small,
                 bottom: -20,
                 child: Row(
                   children: [
@@ -128,52 +126,38 @@ class ProfileView extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 50),
+          SizedBox(height: 50),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(small),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   profile.name,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: primaryInk,
-                  ),
+                  style: title4.copyWith(color: primaryInk),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: tripleXS),
                 Text(
                   profile.headline,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: secondaryInk,
-                  ),
+                  style: label2Regular.copyWith(color: secondaryInk),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: doubleXS),
                 Row(
                   children: [
                     const Icon(Icons.location_on, size: 16, color: gray_600),
-                    const SizedBox(width: 4),
+                    SizedBox(width: tripleXS),
                     Text(
                       profile.location,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: gray_600,
-                      ),
+                      style: label2Regular.copyWith(color: gray_600),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: doubleXS),
                 Text(
                   '${profile.connections}+ conexões',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: blue_500,
-                  ),
+                  style: labelTextStyle.copyWith(color: blue_500),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: small),
                 Row(
                   children: [
                     Expanded(
@@ -184,15 +168,15 @@ class ProfileView extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: EdgeInsets.symmetric(vertical: extraSmall),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Aberto a',
-                          style: TextStyle(color: white),
+                          style: label2Regular.copyWith(color: white),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: doubleXS),
                     Expanded(
                       child: OutlinedButton(
                         onPressed: vm.onAddSectionTapped,
@@ -201,11 +185,11 @@ class ProfileView extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: EdgeInsets.symmetric(vertical: extraSmall),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Adicionar seção',
-                          style: TextStyle(color: blue_500),
+                          style: label2Regular.copyWith(color: blue_500),
                         ),
                       ),
                     ),
@@ -221,8 +205,8 @@ class ProfileView extends StatelessWidget {
 
   Widget _buildSalaryPredictionSection(ProfileViewModel vm) {
     return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: doubleXS),
+      padding: EdgeInsets.all(small),
       color: white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,15 +216,11 @@ class ProfileView extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.trending_up, color: green_confirmation, size: 24),
-                  const SizedBox(width: 8),
-                  const Text(
+                  const Icon(Icons.trending_up, color: green_confirmation, size: 24),
+                  SizedBox(width: doubleXS),
+                  Text(
                     'Previsão Salarial',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryInk,
-                    ),
+                    style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
                   ),
                 ],
               ),
@@ -248,22 +228,22 @@ class ProfileView extends StatelessWidget {
                 TextButton.icon(
                   onPressed: vm.calculateSalaryPrediction,
                   icon: const Icon(Icons.calculate, size: 18),
-                  label: const Text('Calcular'),
+                  label: Text('Calcular', style: label2Regular.copyWith(color: blue_500)),
                   style: TextButton.styleFrom(foregroundColor: blue_500),
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           if (vm.isPredicting)
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(16),
-                child: CircularProgressIndicator(),
+                padding: EdgeInsets.all(small),
+                child: const CircularProgressIndicator(),
               ),
             )
           else if (vm.predictionError != null)
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(extraSmall),
               decoration: BoxDecoration(
                 color: red_error.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
@@ -271,17 +251,17 @@ class ProfileView extends StatelessWidget {
               child: Row(
                 children: [
                   const Icon(Icons.error_outline, color: red_error, size: 20),
-                  const SizedBox(width: 8),
+                  SizedBox(width: doubleXS),
                   Text(
                     vm.predictionError!,
-                    style: const TextStyle(color: red_error),
+                    style: label2Regular.copyWith(color: red_error),
                   ),
                 ],
               ),
             )
           else if (vm.predictedSalary != null)
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(small),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [blue_500.withOpacity(0.1), green_confirmation.withOpacity(0.1)],
@@ -293,42 +273,38 @@ class ProfileView extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Salário estimado baseado nas suas habilidades',
-                    style: TextStyle(fontSize: 12, color: gray_600),
+                    style: label2Regular.copyWith(color: gray_600),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: doubleXS),
                   Text(
                     vm.predictedSalary!,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: green_confirmation,
-                    ),
+                    style: title3.copyWith(color: green_confirmation),
                   ),
-                  const SizedBox(height: 4),
-                  const Text(
+                  SizedBox(height: tripleXS),
+                  Text(
                     'por ano (USD)',
-                    style: TextStyle(fontSize: 12, color: gray_600),
+                    style: label2Regular.copyWith(color: gray_600),
                   ),
                 ],
               ),
             )
           else
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(small),
               decoration: BoxDecoration(
                 color: gray_200,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.lightbulb_outline, color: yellow_marigold, size: 20),
-                  SizedBox(width: 12),
+                  const Icon(Icons.lightbulb_outline, color: yellow_marigold, size: 20),
+                  SizedBox(width: extraSmall),
                   Expanded(
                     child: Text(
                       'Clique em "Calcular" para ver uma estimativa salarial baseada nas suas habilidades e experiência.',
-                      style: TextStyle(fontSize: 13, color: gray_600),
+                      style: label2Regular.copyWith(color: gray_600, fontSize: 13),
                     ),
                   ),
                 ],
@@ -342,8 +318,8 @@ class ProfileView extends StatelessWidget {
   Widget _buildAboutSection(ProfileViewModel vm) {
     final profile = vm.profile!;
     return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: doubleXS),
+      padding: EdgeInsets.all(small),
       color: white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -351,13 +327,9 @@ class ProfileView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Sobre',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: primaryInk,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               if (vm.isEditing)
                 IconButton(
@@ -366,14 +338,10 @@ class ProfileView extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           Text(
             profile.about,
-            style: const TextStyle(
-              fontSize: 14,
-              color: secondaryInk,
-              height: 1.5,
-            ),
+            style: label2Regular.copyWith(color: secondaryInk, height: 1.5),
           ),
         ],
       ),
@@ -383,8 +351,8 @@ class ProfileView extends StatelessWidget {
   Widget _buildExperienceSection(ProfileViewModel vm) {
     final profile = vm.profile!;
     return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: doubleXS),
+      padding: EdgeInsets.all(small),
       color: white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -392,13 +360,9 @@ class ProfileView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Experiência',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: primaryInk,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               if (vm.isEditing)
                 Row(
@@ -415,7 +379,7 @@ class ProfileView extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           ...profile.experiences.map((exp) => _buildExperienceItem(exp)),
         ],
       ),
@@ -424,7 +388,7 @@ class ProfileView extends StatelessWidget {
 
   Widget _buildExperienceItem(ExperienceModel experience) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: small),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -437,48 +401,32 @@ class ProfileView extends StatelessWidget {
             ),
             child: const Icon(Icons.business, color: gray_600),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: extraSmall),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   experience.title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: primaryInk,
-                  ),
+                  style: labelTextStyle.copyWith(color: primaryInk),
                 ),
                 Text(
                   experience.company,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: secondaryInk,
-                  ),
+                  style: label2Regular.copyWith(color: secondaryInk),
                 ),
                 Text(
                   experience.duration,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: gray_600,
-                  ),
+                  style: label2Regular.copyWith(color: gray_600),
                 ),
                 Text(
                   experience.location,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: gray_600,
-                  ),
+                  style: label2Regular.copyWith(color: gray_600),
                 ),
                 if (experience.description != null) ...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: doubleXS),
                   Text(
                     experience.description!,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: secondaryInk,
-                    ),
+                    style: label2Regular.copyWith(color: secondaryInk, fontSize: 13),
                   ),
                 ],
               ],
@@ -492,8 +440,8 @@ class ProfileView extends StatelessWidget {
   Widget _buildEducationSection(ProfileViewModel vm) {
     final profile = vm.profile!;
     return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: doubleXS),
+      padding: EdgeInsets.all(small),
       color: white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -501,13 +449,9 @@ class ProfileView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Formação acadêmica',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: primaryInk,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               if (vm.isEditing)
                 IconButton(
@@ -516,7 +460,7 @@ class ProfileView extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           ...profile.education.map((edu) => _buildEducationItem(edu)),
         ],
       ),
@@ -525,7 +469,7 @@ class ProfileView extends StatelessWidget {
 
   Widget _buildEducationItem(EducationModel education) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.only(bottom: small),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -538,32 +482,22 @@ class ProfileView extends StatelessWidget {
             ),
             child: const Icon(Icons.school, color: gray_600),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: extraSmall),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   education.institution,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: primaryInk,
-                  ),
+                  style: labelTextStyle.copyWith(color: primaryInk),
                 ),
                 Text(
                   education.degree,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: secondaryInk,
-                  ),
+                  style: label2Regular.copyWith(color: secondaryInk),
                 ),
                 Text(
                   education.period,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: gray_600,
-                  ),
+                  style: label2Regular.copyWith(color: gray_600),
                 ),
               ],
             ),
@@ -576,8 +510,8 @@ class ProfileView extends StatelessWidget {
   Widget _buildSkillsSection(ProfileViewModel vm) {
     final profile = vm.profile!;
     return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: doubleXS),
+      padding: EdgeInsets.all(small),
       color: white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -585,13 +519,9 @@ class ProfileView extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Competências',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: primaryInk,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               if (vm.isEditing)
                 IconButton(
@@ -600,7 +530,7 @@ class ProfileView extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: extraSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -613,17 +543,14 @@ class ProfileView extends StatelessWidget {
 
   Widget _buildSkillChip(String skill) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: extraSmall, vertical: tripleXS + 2),
       decoration: BoxDecoration(
         color: blue_100,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
         skill,
-        style: const TextStyle(
-          fontSize: 12,
-          color: blue_600,
-        ),
+        style: label2Regular.copyWith(color: blue_600),
       ),
     );
   }

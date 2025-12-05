@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../resources/shared/colors.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/shared/styles.dart';
+import '../../../DesignSystem/shared/spacing.dart';
+import '../../../DesignSystem/Components/Avatar/avatar.dart';
+import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
 import 'create_post_view_model.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -23,17 +27,13 @@ class CreatePostView extends StatelessWidget {
                 icon: const Icon(Icons.close, color: primaryInk),
                 onPressed: vm.goBack,
               ),
-              title: const Text(
+              title: Text(
                 'Criar publicação',
-                style: TextStyle(
-                  color: primaryInk,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               actions: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 8),
+                  padding: EdgeInsets.only(right: doubleXS),
                   child: TextButton(
                     onPressed: vm.canPost && !vm.isPosting ? vm.submitPost : null,
                     style: TextButton.styleFrom(
@@ -41,20 +41,20 @@ class CreatePostView extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: small),
                     ),
                     child: vm.isPosting
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
+                        ? SizedBox(
+                            width: small,
+                            height: small,
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               color: white,
                             ),
                           )
                         : Text(
                             'Publicar',
-                            style: TextStyle(
+                            style: label2Regular.copyWith(
                               color: vm.canPost ? white : gray_500,
                             ),
                           ),
@@ -87,49 +87,40 @@ class CreatePostView extends StatelessWidget {
 
   Widget _buildUserHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(small),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 24,
-            backgroundColor: navy_700,
-            child: Text(
-              'VH',
-              style: TextStyle(
-                color: white,
-                fontWeight: FontWeight.bold,
-              ),
+          Avatar.instantiate(
+            viewModel: AvatarViewModel(
+              initials: 'VH',
+              size: 48,
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: extraSmall),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Victor Hugo',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: primaryInk,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 16),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 4),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                margin: EdgeInsets.only(top: tripleXS),
+                padding: EdgeInsets.symmetric(horizontal: doubleXS, vertical: tripleXS),
                 decoration: BoxDecoration(
                   border: Border.all(color: gray_400),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.public, size: 14, color: gray_600),
-                    SizedBox(width: 4),
+                    const Icon(Icons.public, size: 14, color: gray_600),
+                    SizedBox(width: tripleXS),
                     Text(
                       'Qualquer pessoa',
-                      style: TextStyle(fontSize: 12, color: gray_600),
+                      style: label2Regular.copyWith(color: gray_600),
                     ),
-                    Icon(Icons.arrow_drop_down, size: 16, color: gray_600),
+                    const Icon(Icons.arrow_drop_down, size: 16, color: gray_600),
                   ],
                 ),
               ),
@@ -142,32 +133,25 @@ class CreatePostView extends StatelessWidget {
 
   Widget _buildContentInput(CreatePostViewModel vm) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: small),
       child: TextField(
         controller: vm.contentController,
         onChanged: (_) => vm.updateContent(),
         maxLines: null,
         minLines: 5,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           hintText: 'Sobre o que você quer falar?',
-          hintStyle: TextStyle(
-            color: gray_500,
-            fontSize: 16,
-          ),
+          hintStyle: bodyRegular.copyWith(color: gray_500),
           border: InputBorder.none,
         ),
-        style: const TextStyle(
-          fontSize: 16,
-          color: primaryInk,
-          height: 1.5,
-        ),
+        style: bodyRegular.copyWith(color: primaryInk),
       ),
     );
   }
 
   Widget _buildImagePreview(CreatePostViewModel vm) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: EdgeInsets.all(small),
       child: Stack(
         children: [
           Container(
@@ -178,29 +162,21 @@ class CreatePostView extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Center(
-              child: Icon(
-                Icons.image,
-                size: 64,
-                color: gray_400,
-              ),
+              child: Icon(Icons.image, size: 64, color: gray_400),
             ),
           ),
           Positioned(
-            top: 8,
-            right: 8,
+            top: doubleXS,
+            right: doubleXS,
             child: GestureDetector(
               onTap: vm.removeImage,
               child: Container(
-                padding: const EdgeInsets.all(4),
+                padding: EdgeInsets.all(tripleXS),
                 decoration: const BoxDecoration(
                   color: primaryInk,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.close,
-                  color: white,
-                  size: 16,
-                ),
+                child: const Icon(Icons.close, color: white, size: 16),
               ),
             ),
           ),
@@ -211,7 +187,7 @@ class CreatePostView extends StatelessWidget {
 
   Widget _buildBottomBar(CreatePostViewModel vm) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(small),
       decoration: const BoxDecoration(
         color: white,
         border: Border(top: BorderSide(color: gray_300)),
@@ -243,14 +219,14 @@ class CreatePostView extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: small),
             Row(
               children: [
                 const Icon(Icons.chat_bubble_outline, size: 20, color: gray_600),
-                const SizedBox(width: 8),
-                const Text(
+                SizedBox(width: doubleXS),
+                Text(
                   'Qualquer pessoa pode comentar',
-                  style: TextStyle(fontSize: 14, color: gray_600),
+                  style: label2Regular.copyWith(color: gray_600),
                 ),
                 const Spacer(),
                 Switch(
@@ -275,17 +251,14 @@ class CreatePostView extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: EdgeInsets.symmetric(vertical: doubleXS),
           child: Column(
             children: [
               Icon(icon, color: gray_600, size: 24),
-              const SizedBox(height: 4),
+              SizedBox(height: tripleXS),
               Text(
                 label,
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: gray_600,
-                ),
+                style: label2Regular.copyWith(color: gray_600, fontSize: 11),
               ),
             ],
           ),

@@ -6,6 +6,8 @@ import '../../../DesignSystem/shared/styles.dart';
 import '../../../DesignSystem/shared/spacing.dart';
 import '../../../DesignSystem/Components/BaseProfile/base_profile.dart';
 import '../../../DesignSystem/Components/BaseProfile/base_profile_view_model.dart';
+import '../../../DesignSystem/Components/Avatar/avatar.dart';
+import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
 import 'feed_view_model.dart';
 
 class FeedView extends StatelessWidget {
@@ -54,6 +56,15 @@ class FeedView extends StatelessWidget {
           'lib/DesignSystem/Assets/ic_launcher_APP.svg',
           width: 40,
           height: 40,
+          placeholderBuilder: (context) => Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: blue_500,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(Icons.work, color: white, size: 24),
+          ),
         ),
       ),
       title: GestureDetector(
@@ -93,7 +104,12 @@ class FeedView extends StatelessWidget {
       color: white,
       child: Row(
         children: [
-          _buildAvatar('EU'),
+          Avatar.instantiate(
+            viewModel: AvatarViewModel(
+              initials: 'EU',
+              size: 48,
+            ),
+          ),
           SizedBox(width: extraSmall),
           Expanded(
             child: GestureDetector(
@@ -112,24 +128,6 @@ class FeedView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildAvatar(String initials) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: gray_200,
-        border: Border.all(color: gray_300, width: 1),
-      ),
-      child: Center(
-        child: Text(
-          initials,
-          style: labelTextStyle.copyWith(color: gray_600),
-        ),
       ),
     );
   }

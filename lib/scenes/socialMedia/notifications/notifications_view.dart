@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../resources/shared/colors.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/shared/styles.dart';
+import '../../../DesignSystem/shared/spacing.dart';
+import '../../../DesignSystem/Components/Avatar/avatar.dart';
+import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
 import 'notifications_view_model.dart';
 
 class NotificationsView extends StatelessWidget {
@@ -23,21 +27,17 @@ class NotificationsView extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back, color: primaryInk),
                 onPressed: vm.goBack,
               ),
-              title: const Text(
+              title: Text(
                 'Notificações',
-                style: TextStyle(
-                  color: primaryInk,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
               ),
               actions: [
                 if (vm.unreadCount > 0)
                   TextButton(
                     onPressed: vm.markAllAsRead,
-                    child: const Text(
+                    child: Text(
                       'Marcar todas',
-                      style: TextStyle(color: blue_500),
+                      style: label2Regular.copyWith(color: blue_500),
                     ),
                   ),
               ],
@@ -67,27 +67,16 @@ class NotificationsView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.notifications_none,
-            size: 80,
-            color: gray_400,
-          ),
-          const SizedBox(height: 16),
-          const Text(
+          const Icon(Icons.notifications_none, size: 80, color: gray_400),
+          SizedBox(height: small),
+          Text(
             'Nenhuma notificação',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: gray_600,
-            ),
+            style: labelTextStyle.copyWith(color: gray_600, fontSize: 18),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: doubleXS),
+          Text(
             'Você está em dia!',
-            style: TextStyle(
-              fontSize: 14,
-              color: gray_500,
-            ),
+            style: label2Regular.copyWith(color: gray_500),
           ),
         ],
       ),
@@ -102,48 +91,41 @@ class NotificationsView extends StatelessWidget {
       background: Container(
         color: red_error,
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 16),
+        padding: EdgeInsets.only(right: small),
         child: const Icon(Icons.delete, color: white),
       ),
       child: InkWell(
         onTap: () => vm.markAsRead(notification.id),
         child: Container(
           color: notification.isRead ? white : blue_100,
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(small),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildNotificationIcon(notification),
-              const SizedBox(width: 12),
+              SizedBox(width: extraSmall),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       notification.title,
-                      style: TextStyle(
-                        fontSize: 14,
+                      style: labelTextStyle.copyWith(
                         fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
                         color: primaryInk,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: tripleXS),
                     Text(
                       notification.description,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: gray_600,
-                      ),
+                      style: label2Regular.copyWith(color: gray_600, fontSize: 13),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: tripleXS),
                     Text(
                       notification.timeAgo,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: gray_500,
-                      ),
+                      style: label2Regular.copyWith(color: gray_500),
                     ),
                   ],
                 ),
@@ -195,23 +177,21 @@ class NotificationsView extends StatelessWidget {
     }
 
     if (notification.avatar.length <= 2 && !notification.avatar.contains(RegExp(r'[^\w]'))) {
-      return CircleAvatar(
-        radius: 24,
-        backgroundColor: navy_700,
-        child: Text(
-          notification.avatar,
-          style: const TextStyle(
-            color: white,
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
+      return Avatar.instantiate(
+        viewModel: AvatarViewModel(
+          initials: notification.avatar,
+          size: 48,
         ),
       );
     }
 
-    return CircleAvatar(
-      radius: 24,
-      backgroundColor: gray_200,
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: const BoxDecoration(
+        color: gray_200,
+        shape: BoxShape.circle,
+      ),
       child: Icon(iconData, color: iconColor, size: 24),
     );
   }

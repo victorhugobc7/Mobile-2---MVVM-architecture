@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import 'create_post_service.dart';
 
 class CreatePostViewModel extends ChangeNotifier {
   final AppCoordinator coordinator;
+  final CreatePostService service;
   final TextEditingController contentController = TextEditingController();
 
   bool _isPosting = false;
   String? _selectedImage;
   bool _anyoneCanComment = true;
 
-  CreatePostViewModel({required this.coordinator});
+  CreatePostViewModel({required this.coordinator, required this.service});
 
   bool get isPosting => _isPosting;
   String? get selectedImage => _selectedImage;
@@ -41,7 +43,15 @@ class CreatePostViewModel extends ChangeNotifier {
     _isPosting = true;
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      await service.createPost(
+        content: contentController.text,
+        imagePath: _selectedImage,
+        anyoneCanComment: _anyoneCanComment,
+      );
+    } catch (e) {
+      // Handle error
+    }
 
     _isPosting = false;
     notifyListeners();

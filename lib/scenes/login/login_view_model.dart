@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../resources/shared/app_coordinator.dart';
 import 'login_service.dart';
 
@@ -22,6 +21,6 @@ class LoginViewModel {
   }
 
   void presentHome(String name, String address) {
-    coordinator.goToHome(name, address);
+    coordinator.goToFeedFromLogin();
   }
 }

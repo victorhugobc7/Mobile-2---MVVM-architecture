@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import 'messages_service.dart';
 
 class MessageModel {
   final String id;
@@ -23,12 +24,13 @@ class MessageModel {
 
 class MessagesViewModel extends ChangeNotifier {
   final AppCoordinator coordinator;
+  final MessagesService service;
 
   List<MessageModel> _messages = [];
   bool _isLoading = false;
   String _searchQuery = '';
 
-  MessagesViewModel({required this.coordinator}) {
+  MessagesViewModel({required this.coordinator, required this.service}) {
     _loadMessages();
   }
 
@@ -43,70 +45,15 @@ class MessagesViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   int get totalUnread => _messages.fold(0, (sum, m) => sum + m.unreadCount);
 
-  void _loadMessages() {
+  Future<void> _loadMessages() async {
     _isLoading = true;
     notifyListeners();
 
-    _messages = [
-      MessageModel(
-        id: '1',
-        contactName: 'Maria Silva',
-        contactAvatar: 'MS',
-        lastMessage: 'Oi! Podemos conversar sobre a vaga?',
-        timeAgo: '2 min',
-        isOnline: true,
-        unreadCount: 2,
-      ),
-      MessageModel(
-        id: '2',
-        contactName: 'João Santos',
-        contactAvatar: 'JS',
-        lastMessage: 'Obrigado pelo feedback! 🙏',
-        timeAgo: '1 h',
-        isOnline: true,
-      ),
-      MessageModel(
-        id: '3',
-        contactName: 'Ana Costa',
-        contactAvatar: 'AC',
-        lastMessage: 'Vou dar uma olhada e te retorno',
-        timeAgo: '3 h',
-        isOnline: false,
-        unreadCount: 1,
-      ),
-      MessageModel(
-        id: '4',
-        contactName: 'Pedro Oliveira',
-        contactAvatar: 'PO',
-        lastMessage: 'Excelente trabalho no projeto!',
-        timeAgo: '1 dia',
-        isOnline: false,
-      ),
-      MessageModel(
-        id: '5',
-        contactName: 'Fernanda Lima',
-        contactAvatar: 'FL',
-        lastMessage: 'Quando podemos agendar uma reunião?',
-        timeAgo: '2 dias',
-        isOnline: false,
-      ),
-      MessageModel(
-        id: '6',
-        contactName: 'Roberto Alves',
-        contactAvatar: 'RA',
-        lastMessage: 'Segue o documento que mencionei',
-        timeAgo: '3 dias',
-        isOnline: true,
-      ),
-      MessageModel(
-        id: '7',
-        contactName: 'Beatriz Santos',
-        contactAvatar: 'BS',
-        lastMessage: 'Você viu a nova atualização do Flutter?',
-        timeAgo: '1 semana',
-        isOnline: false,
-      ),
-    ];
+    try {
+      _messages = await service.fetchConversations();
+    } catch (e) {
+      // Handle error
+    }
 
     _isLoading = false;
     notifyListeners();

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../resources/shared/colors.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/shared/styles.dart';
+import '../../../DesignSystem/shared/spacing.dart';
+import '../../../DesignSystem/Components/Avatar/avatar.dart';
+import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
 import 'messages_view_model.dart';
 
 class MessagesView extends StatelessWidget {
@@ -26,21 +30,14 @@ class MessagesView extends StatelessWidget {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Mensagens',
-                    style: TextStyle(
-                      color: primaryInk,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
                   ),
                   if (vm.totalUnread > 0)
                     Text(
                       '${vm.totalUnread} não lida${vm.totalUnread > 1 ? 's' : ''}',
-                      style: const TextStyle(
-                        color: gray_600,
-                        fontSize: 12,
-                      ),
+                      style: label2Regular.copyWith(color: gray_600),
                     ),
                 ],
               ),
@@ -87,12 +84,12 @@ class MessagesView extends StatelessWidget {
 
   Widget _buildSearchBar(MessagesViewModel vm) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(small),
       child: TextField(
         onChanged: vm.updateSearch,
         decoration: InputDecoration(
           hintText: 'Pesquisar mensagens',
-          hintStyle: const TextStyle(color: gray_500),
+          hintStyle: bodyRegular.copyWith(color: gray_500),
           prefixIcon: const Icon(Icons.search, color: gray_500),
           filled: true,
           fillColor: gray_200,
@@ -100,7 +97,7 @@ class MessagesView extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: EdgeInsets.symmetric(horizontal: small, vertical: extraSmall),
         ),
       ),
     );
@@ -111,27 +108,16 @@ class MessagesView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.message_outlined,
-            size: 80,
-            color: gray_400,
-          ),
-          const SizedBox(height: 16),
-          const Text(
+          const Icon(Icons.message_outlined, size: 80, color: gray_400),
+          SizedBox(height: small),
+          Text(
             'Nenhuma mensagem',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: gray_600,
-            ),
+            style: labelTextStyle.copyWith(color: gray_600, fontSize: 18),
           ),
-          const SizedBox(height: 8),
-          const Text(
+          SizedBox(height: doubleXS),
+          Text(
             'Comece uma conversa!',
-            style: TextStyle(
-              fontSize: 14,
-              color: gray_500,
-            ),
+            style: label2Regular.copyWith(color: gray_500),
           ),
         ],
       ),
@@ -142,40 +128,18 @@ class MessagesView extends StatelessWidget {
     return InkWell(
       onTap: () => vm.openConversation(message.id),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: small, vertical: extraSmall),
         child: Row(
           children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundColor: navy_700,
-                  child: Text(
-                    message.contactAvatar,
-                    style: const TextStyle(
-                      color: white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                if (message.isOnline)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: green_confirmation,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: white, width: 2),
-                      ),
-                    ),
-                  ),
-              ],
+            Avatar.instantiate(
+              viewModel: AvatarViewModel(
+                initials: message.contactAvatar,
+                size: 56,
+                showOnlineIndicator: true,
+                isOnline: message.isOnline,
+              ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: extraSmall),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,8 +149,7 @@ class MessagesView extends StatelessWidget {
                       Expanded(
                         child: Text(
                           message.contactName,
-                          style: TextStyle(
-                            fontSize: 16,
+                          style: bodyRegular.copyWith(
                             fontWeight: message.unreadCount > 0
                                 ? FontWeight.bold
                                 : FontWeight.normal,
@@ -198,21 +161,19 @@ class MessagesView extends StatelessWidget {
                       ),
                       Text(
                         message.timeAgo,
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: label2Regular.copyWith(
                           color: message.unreadCount > 0 ? blue_500 : gray_500,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: tripleXS),
                   Row(
                     children: [
                       Expanded(
                         child: Text(
                           message.lastMessage,
-                          style: TextStyle(
-                            fontSize: 14,
+                          style: label2Regular.copyWith(
                             color: message.unreadCount > 0
                                 ? primaryInk
                                 : gray_600,
@@ -226,9 +187,9 @@ class MessagesView extends StatelessWidget {
                       ),
                       if (message.unreadCount > 0)
                         Container(
-                          margin: const EdgeInsets.only(left: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
+                          margin: EdgeInsets.only(left: doubleXS),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: doubleXS,
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
@@ -237,9 +198,8 @@ class MessagesView extends StatelessWidget {
                           ),
                           child: Text(
                             message.unreadCount.toString(),
-                            style: const TextStyle(
+                            style: label2Regular.copyWith(
                               color: white,
-                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

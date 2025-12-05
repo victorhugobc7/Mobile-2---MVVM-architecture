@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
 import '../../jobPrediction/job_prediction_service.dart';
+import 'profile_service.dart';
 
 class UserProfileModel {
   final String name;
@@ -56,6 +57,7 @@ class EducationModel {
 
 class ProfileViewModel extends ChangeNotifier {
   final AppCoordinator coordinator;
+  final ProfileService service;
   final JobPredictionService _predictionService = JobPredictionService();
 
   UserProfileModel? _profile;
@@ -67,7 +69,7 @@ class ProfileViewModel extends ChangeNotifier {
   bool _isPredicting = false;
   String? _predictionError;
 
-  ProfileViewModel({required this.coordinator}) {
+  ProfileViewModel({required this.coordinator, required this.service}) {
     _loadProfile();
   }
 
@@ -78,67 +80,15 @@ class ProfileViewModel extends ChangeNotifier {
   bool get isPredicting => _isPredicting;
   String? get predictionError => _predictionError;
 
-  void _loadProfile() {
+  Future<void> _loadProfile() async {
     _isLoading = true;
     notifyListeners();
 
-    _profile = UserProfileModel(
-      name: 'Victor Hugo',
-      headline: 'Desenvolvedor Mobile | Flutter | iOS | Android',
-      location: 'São Paulo, Brasil',
-      avatar: 'VH',
-      connections: 487,
-      about: 'Desenvolvedor apaixonado por criar aplicativos móveis incríveis. '
-          'Especializado em Flutter e desenvolvimento nativo. '
-          'Sempre buscando aprender novas tecnologias e compartilhar conhecimento com a comunidade.',
-      experiences: [
-        ExperienceModel(
-          title: 'Desenvolvedor Mobile Senior',
-          company: 'Tech Innovation',
-          duration: 'jan 2022 - Presente · 2 anos',
-          location: 'São Paulo, Brasil',
-          description: 'Desenvolvimento de aplicativos Flutter multiplataforma. '
-              'Liderança técnica de squad mobile.',
-        ),
-        ExperienceModel(
-          title: 'Desenvolvedor Flutter',
-          company: 'StartupXYZ',
-          duration: 'mar 2020 - dez 2021 · 1 ano 10 meses',
-          location: 'São Paulo, Brasil',
-          description: 'Desenvolvimento e manutenção de apps Flutter.',
-        ),
-        ExperienceModel(
-          title: 'Desenvolvedor Android',
-          company: 'Mobile Solutions',
-          duration: 'jan 2018 - fev 2020 · 2 anos 2 meses',
-          location: 'São Paulo, Brasil',
-        ),
-      ],
-      education: [
-        EducationModel(
-          institution: 'Universidade de São Paulo',
-          degree: 'Bacharelado em Ciência da Computação',
-          period: '2014 - 2018',
-        ),
-        EducationModel(
-          institution: 'Alura',
-          degree: 'Formação Flutter',
-          period: '2020',
-        ),
-      ],
-      skills: [
-        'Flutter',
-        'Dart',
-        'iOS',
-        'Android',
-        'Swift',
-        'Kotlin',
-        'Firebase',
-        'REST APIs',
-        'Git',
-        'Agile/Scrum',
-      ],
-    );
+    try {
+      _profile = await service.fetchProfile();
+    } catch (e) {
+      // Handle error
+    }
 
     _isLoading = false;
     notifyListeners();

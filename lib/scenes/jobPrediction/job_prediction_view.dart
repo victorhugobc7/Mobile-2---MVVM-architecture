@@ -13,6 +13,7 @@ import '../../DesignSystem/Components/DropdownForm/dropdown_form.dart';
 import '../../DesignSystem/Components/DropdownForm/dropdown_form_viewmodel.dart';
 import '../../DesignSystem/shared/colors.dart';
 import '../../DesignSystem/shared/styles.dart';
+import '../../DesignSystem/shared/spacing.dart';
 
 class JobPredictionView extends StatelessWidget {
   final JobPredictionViewModel viewModel;
@@ -27,19 +28,19 @@ class JobPredictionView extends StatelessWidget {
           return Scaffold(
             backgroundColor: white,
             appBar: AppBar(
-              title: const Text('Previsão de Salário'),
+              title: Text('Previsão de Salário', style: labelTextStyle.copyWith(color: white)),
               backgroundColor: blue_500,
               foregroundColor: white,
             ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(medium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(
                     color: gray_200,
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(small),
                       child: ActionCard.instantiate(
                         viewModel: ActionCardViewModel(
                           headerIcon: Icons.monetization_on,
@@ -49,10 +50,10 @@ class JobPredictionView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: medium),
 
-                  Text('Informações da Empresa', style: heading5Regular),
-                  const SizedBox(height: 16),
+                  Text('Informações da Empresa', style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18)),
+                  SizedBox(height: small),
 
                   StyledInputField.instantiate(
                     viewModel: InputTextViewModel(
@@ -63,7 +64,7 @@ class JobPredictionView extends StatelessWidget {
                       hasTitle: true,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: small),
 
                   StyledInputField.instantiate(
                     viewModel: InputTextViewModel(
@@ -74,7 +75,7 @@ class JobPredictionView extends StatelessWidget {
                       hasTitle: true,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: small),
 
                   StyledInputField.instantiate(
                     viewModel: InputTextViewModel(
@@ -85,13 +86,13 @@ class JobPredictionView extends StatelessWidget {
                       hasTitle: true,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: medium),
 
-                  Text('Detalhes da Vaga', style: heading5Regular),
-                  const SizedBox(height: 16),
+                  Text('Detalhes da Vaga', style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18)),
+                  SizedBox(height: small),
 
-                  Text('Tipo de Cargo', style: labelTextStyle),
-                  const SizedBox(height: 8),
+                  Text('Tipo de Cargo', style: labelTextStyle.copyWith(color: primaryInk)),
+                  SizedBox(height: doubleXS),
                   DropdownFormField<String>(
                     viewModel: DropdownFormViewModel<String>(
                       items: vm.jobTypes,
@@ -100,10 +101,10 @@ class JobPredictionView extends StatelessWidget {
                       onChanged: vm.setSelectedJobType,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: small),
 
-                  Text('Nível de Senioridade', style: labelTextStyle),
-                  const SizedBox(height: 8),
+                  Text('Nível de Senioridade', style: labelTextStyle.copyWith(color: primaryInk)),
+                  SizedBox(height: doubleXS),
                   DropdownFormField<String>(
                     viewModel: DropdownFormViewModel<String>(
                       items: vm.seniorityLevels,
@@ -112,21 +113,21 @@ class JobPredictionView extends StatelessWidget {
                       onChanged: vm.setSelectedSeniority,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: small),
 
                   CheckboxNew(
                     viewModel: CheckboxViewModel(title: 'Vaga no mesmo estado da sede'),
                     initialValue: vm.sameState,
                     onChanged: vm.setSameState,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: medium),
 
-                  Text('Habilidades Requeridas', style: heading5Regular),
-                  const SizedBox(height: 16),
+                  Text('Habilidades Requeridas', style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18)),
+                  SizedBox(height: small),
 
                   Wrap(
-                    spacing: 16,
-                    runSpacing: 8,
+                    spacing: small,
+                    runSpacing: doubleXS,
                     children: [
                       SizedBox(
                         width: 150,
@@ -170,7 +171,7 @@ class JobPredictionView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: large),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +185,7 @@ class JobPredictionView extends StatelessWidget {
                           onPressed: vm.isLoading ? () {} : vm.predictSalary,
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: small),
                       ActionButton.instantiate(
                         viewModel: ActionButtonViewModel(
                           size: ActionButtonSize.medium,
@@ -195,7 +196,7 @@ class JobPredictionView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: large),
 
                   if (vm.isLoading)
                     const Center(child: CircularProgressIndicator()),
@@ -203,7 +204,7 @@ class JobPredictionView extends StatelessWidget {
                   if (vm.error != null)
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(small),
                       decoration: BoxDecoration(
                         color: red_light,
                         borderRadius: BorderRadius.circular(8),
@@ -218,7 +219,7 @@ class JobPredictionView extends StatelessWidget {
                   if (vm.predictedSalary != null && !vm.isLoading)
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(medium),
                       decoration: BoxDecoration(
                         color: blue_100,
                         borderRadius: BorderRadius.circular(8),
@@ -226,21 +227,21 @@ class JobPredictionView extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Text('Salário Previsto', style: subtitle1Regular),
-                          const SizedBox(height: 8),
+                          Text('Salário Previsto', style: bodyRegular.copyWith(color: secondaryInk)),
+                          SizedBox(height: doubleXS),
                           Text(
                             '\$${vm.predictedSalary}K',
-                            style: heading4Regular.copyWith(color: blue_600),
+                            style: title4.copyWith(color: blue_600),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: doubleXS),
                           Text(
                             '${vm.currency} - ${vm.unit}',
-                            style: subtitle1Regular.copyWith(color: secondaryInk),
+                            style: label2Regular.copyWith(color: secondaryInk),
                           ),
                         ],
                       ),
                     ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: large),
                 ],
               ),
             ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../resources/shared/app_coordinator.dart';
 
 class HomeViewModel {

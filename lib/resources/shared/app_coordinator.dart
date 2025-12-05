@@ -16,7 +16,7 @@ class AppCoordinator {
   NavigatorState? get _navigator => navigatorKey.currentState;
 
   Widget startApp() {
-    return goToFeedAsHome();
+    return goToLogin();
   }
 
   Widget goToLogin() {
@@ -25,6 +25,14 @@ class AppCoordinator {
 
   Widget goToFeedAsHome() {
     return FeedFactory.make(coordinator: this);
+  }
+
+  void goToFeedFromLogin() {
+    _navigator?.pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => FeedFactory.make(coordinator: this),
+      ),
+    );
   }
 
   void goToHome(String name, String address) {

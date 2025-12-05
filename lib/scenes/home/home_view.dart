@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'home_view_model.dart';
 import '../../DesignSystem/Components/Buttons/ActionButton/action_button.dart';
 import '../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
-import '../../DesignSystem/Components/Cards/ActionCard/action_card.dart';
-import '../../DesignSystem/Components/Cards/ActionCard/action_card_view_model.dart';
 import '../../DesignSystem/shared/colors.dart';
 import '../../DesignSystem/shared/styles.dart';
+import '../../DesignSystem/shared/spacing.dart';
 
 class HomeView extends StatelessWidget {
   final HomeViewModel viewModel;
@@ -16,7 +15,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        title: const Text('Home'),
+        title: Text('Home', style: labelTextStyle.copyWith(color: white)),
         backgroundColor: blue_500,
         foregroundColor: white,
         actions: [
@@ -27,17 +26,17 @@ class HomeView extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(medium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Bem vindo, ${viewModel.userName}!', style: heading4Regular),
-            const SizedBox(height: 8),
-            Text(viewModel.userAddress, style: subtitle1Regular.copyWith(color: secondaryInk)),
-            const SizedBox(height: 32),
+            Text('Bem vindo, ${viewModel.userName}!', style: title4.copyWith(color: primaryInk)),
+            SizedBox(height: doubleXS),
+            Text(viewModel.userAddress, style: bodyRegular.copyWith(color: secondaryInk)),
+            SizedBox(height: large),
 
-            Text('Ações', style: heading5Regular),
-            const SizedBox(height: 16),
+            Text('Ações', style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18)),
+            SizedBox(height: small),
 
             _buildNavigationCard(
               context,
@@ -48,7 +47,7 @@ class HomeView extends StatelessWidget {
               onTap: viewModel.goToJobPrediction,
             ),
 
-            const SizedBox(height: 12),
+            SizedBox(height: extraSmall),
 
             _buildNavigationCard(
               context,
@@ -72,7 +71,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: medium),
           ],
         ),
       ),
@@ -90,7 +89,7 @@ class HomeView extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(medium - 4),
         decoration: BoxDecoration(
           color: white,
           borderRadius: BorderRadius.circular(8),
@@ -106,25 +105,25 @@ class HomeView extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(extraSmall),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, color: color, size: 32),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: small),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: heading5Regular.copyWith(color: primaryInk)),
-                  const SizedBox(height: 4),
-                  Text(description, style: subtitle1Regular.copyWith(color: secondaryInk)),
+                  Text(title, style: labelTextStyle.copyWith(color: primaryInk)),
+                  SizedBox(height: tripleXS),
+                  Text(description, style: label2Regular.copyWith(color: secondaryInk)),
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, color: gray_500),
+            const Icon(Icons.chevron_right, color: gray_500),
           ],
         ),
       ),
