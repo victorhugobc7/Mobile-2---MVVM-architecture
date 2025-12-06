@@ -3,6 +3,8 @@ import 'invitation_card_view_model.dart';
 import '../../shared/colors.dart';
 import '../../shared/styles.dart';
 import '../../shared/spacing.dart';
+import '../Buttons/ActionButton/action_button.dart';
+import '../Buttons/ActionButton/action_button_view_model.dart';
 
 class InvitationCard extends StatelessWidget {
   final InvitationCardViewModel viewModel;
@@ -77,18 +79,12 @@ class InvitationCard extends StatelessWidget {
           icon: const Icon(Icons.close, color: gray_600),
           onPressed: viewModel.onDeclineTapped,
         ),
-        ElevatedButton(
-          onPressed: viewModel.onAcceptTapped,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: blue_500,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: small, vertical: doubleXS),
-          ),
-          child: Text(
-            'Aceitar',
-            style: label2Regular.copyWith(color: white),
+        ActionButton.instantiate(
+          viewModel: ActionButtonViewModel(
+            size: ActionButtonSize.small,
+            style: ActionButtonStyle.primary,
+            text: 'Aceitar',
+            onPressed: viewModel.onAcceptTapped ?? () {},
           ),
         ),
       ],

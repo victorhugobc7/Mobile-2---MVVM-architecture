@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import '../../../DesignSystem/shared/colors.dart';
 import '../../../DesignSystem/shared/spacing.dart';
 import '../../../DesignSystem/Components/CreatePostCard/create_post_card.dart';
-import '../../../DesignSystem/Components/CreatePostCard/create_post_card_view_model.dart';
 import '../../../DesignSystem/Components/PostCard/post_card.dart';
 import '../../../DesignSystem/Components/PostCard/post_card_view_model.dart';
 import '../../../DesignSystem/Components/NavItem/nav_item.dart';
-import '../../../DesignSystem/Components/NavItem/nav_item_view_model.dart';
 import '../../../DesignSystem/Components/FeedAppBar/feed_app_bar.dart';
-import '../../../DesignSystem/Components/FeedAppBar/feed_app_bar_view_model.dart';
+import '../../../DesignSystem/Components/DSRefreshIndicator/ds_refresh_indicator.dart';
+import '../../../DesignSystem/Components/DSRefreshIndicator/ds_refresh_indicator_view_model.dart';
+import '../../../DesignSystem/Components/DSShimmer/ds_shimmer_list.dart';
 import 'feed_view_model.dart';
 
 class FeedView extends StatelessWidget {
@@ -25,42 +25,27 @@ class FeedView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: gray_200,
-            appBar: FeedAppBar.instantiate(
-              viewModel: FeedAppBarViewModel(
-                logoAssetPath: 'lib/DesignSystem/Assets/ic_launcher_APP.svg',
-                searchPlaceholder: 'Pesquisar',
-                onSearchTapped: vm.onSearchTapped,
-                onMessagesTapped: vm.goToMessages,
-              ),
-            ),
+            appBar: FeedAppBar.instantiate(viewModel: vm.appBarViewModel),
             body: vm.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
-                    onRefresh: () async => vm.refreshFeed(),
-                    child: ListView.builder(
-                      padding: EdgeInsets.symmetric(vertical: doubleXS),
-                      itemCount: vm.posts.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return _buildCreatePostCard(vm);
-                        }
-                        return _buildPostCard(vm.posts[index - 1], vm);
-                      },
+                ? _buildShimmerLoading()
+                : DSRefreshIndicator.instantiate(
+                    viewModel: DSRefreshIndicatorViewModel(
+                      onRefresh: () async => vm.refreshFeed(),
+                      child: ListView.builder(
+                        padding: EdgeInsets.symmetric(vertical: doubleXS),
+                        itemCount: vm.posts.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return CreatePostCard.instantiate(viewModel: vm.createPostCardViewModel);
+                          }
+                          return _buildPostCard(vm.posts[index - 1], vm);
+                        },
+                      ),
                     ),
                   ),
             bottomNavigationBar: _buildBottomNav(vm),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildCreatePostCard(FeedViewModel vm) {
-    return CreatePostCard.instantiate(
-      viewModel: CreatePostCardViewModel(
-        avatarInitials: 'EU',
-        placeholder: 'Começar publicação',
-        onTap: vm.goToCreatePost,
       ),
     );
   }
@@ -99,46 +84,22 @@ class FeedView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              NavItem.instantiate(
-                viewModel: NavItemViewModel(
-                  icon: Icons.home_filled,
-                  label: 'Início',
-                  isActive: true,
-                  onTap: vm.onHomeTapped,
-                ),
-              ),
-              NavItem.instantiate(
-                viewModel: NavItemViewModel(
-                  icon: Icons.people_outline,
-                  label: 'Rede',
-                  onTap: vm.goToNetwork,
-                ),
-              ),
-              NavItem.instantiate(
-                viewModel: NavItemViewModel(
-                  icon: Icons.add_box_outlined,
-                  label: 'Publicar',
-                  onTap: vm.goToCreatePost,
-                ),
-              ),
-              NavItem.instantiate(
-                viewModel: NavItemViewModel(
-                  icon: Icons.notifications_outlined,
-                  label: 'Notificações',
-                  onTap: vm.goToNotifications,
-                ),
-              ),
-              NavItem.instantiate(
-                viewModel: NavItemViewModel(
-                  icon: Icons.work_outline,
-                  label: 'Vagas',
-                  onTap: vm.goToJobs,
-                ),
-              ),
+              NavItem.instantiate(viewModel: vm.homeNavViewModel),
+              NavItem.instantiate(viewModel: vm.networkNavViewModel),
+              NavItem.instantiate(viewModel: vm.postNavViewModel),
+              NavItem.instantiate(viewModel: vm.notificationsNavViewModel),
+              NavItem.instantiate(viewModel: vm.jobsNavViewModel),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return DSShimmerList.instantiate(
+      itemCount: 5,
+      itemBuilder: (context, index) => PostCardShimmer.instantiate(),
     );
   }
 }

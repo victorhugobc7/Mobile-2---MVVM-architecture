@@ -28,12 +28,12 @@ class StyledFilterChip extends StatelessWidget {
       side: BorderSide(
         color: viewModel.isSelected ? blue_500 : gray_400,
       ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       checkmarkColor: blue_600,
       showCheckmark: viewModel.showCheckmark,
       padding: EdgeInsets.symmetric(horizontal: doubleXS, vertical: tripleXS),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(small),
-      ),
     );
   }
 }

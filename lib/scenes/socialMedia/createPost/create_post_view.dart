@@ -9,6 +9,8 @@ import '../../../DesignSystem/Components/IconLabelButton/icon_label_button.dart'
 import '../../../DesignSystem/Components/IconLabelButton/icon_label_button_view_model.dart';
 import '../../../DesignSystem/Components/CreatePostAppBar/create_post_app_bar.dart';
 import '../../../DesignSystem/Components/CreatePostAppBar/create_post_app_bar_view_model.dart';
+import '../../../DesignSystem/Components/SwitchButton/switch_button.dart';
+import '../../../DesignSystem/Components/SwitchButton/switch_button_viewmodel.dart';
 import 'create_post_view_model.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -217,10 +219,14 @@ class CreatePostView extends StatelessWidget {
                   style: label2Regular.copyWith(color: gray_600),
                 ),
                 const Spacer(),
-                Switch(
-                  value: vm.anyoneCanComment,
-                  onChanged: vm.setAnyoneCanComment,
-                  activeColor: blue_500,
+                SwitchButton.instantiate(
+                  viewModel: SwitchButtonViewModel(
+                    value: vm.anyoneCanComment,
+                    onChanged: vm.setAnyoneCanComment,
+                    showInlineLabel: true,
+                    onLabel: 'Sim',
+                    offLabel: 'Não',
+                  ),
                 ),
               ],
             ),

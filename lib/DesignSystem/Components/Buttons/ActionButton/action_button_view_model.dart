@@ -11,7 +11,9 @@ enum ActionButtonStyle {
   secondary,
   tertiary,
   warning,
-  negative
+  negative,
+  outline,
+  outlineSuccess,
 }
 
 class ActionButtonViewModel {
@@ -20,6 +22,7 @@ class ActionButtonViewModel {
   final String text;
   final IconData? icon;
   final bool showIcon;
+  final bool isExpanded;
   final Function() onPressed;
 
   ActionButtonViewModel({
@@ -29,5 +32,6 @@ class ActionButtonViewModel {
     required this.onPressed,
     this.icon,
     this.showIcon = false,
+    this.isExpanded = false,
   });
 }

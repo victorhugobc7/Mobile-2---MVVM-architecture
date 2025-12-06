@@ -60,6 +60,17 @@ class JobsService {
         isEasyApply: false,
         applicants: 203,
       ),
+      JobModel(
+        id: '5',
+        title: 'Mobile Engineer',
+        company: 'Itaú',
+        location: 'São Paulo, SP',
+        salary: 'R\$ 16.000 - R\$ 24.000',
+        postedAgo: '3 dias',
+        type: 'hybrid',
+        isEasyApply: false,
+        applicants: 203,
+      ),
     ];
   }
 

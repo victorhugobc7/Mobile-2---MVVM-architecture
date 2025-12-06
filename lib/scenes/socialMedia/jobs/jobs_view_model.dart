@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
+import '../../../DesignSystem/Components/DSTabBar/ds_tab_bar_view_model.dart';
 import 'jobs_service.dart';
 
 class JobModel {
@@ -39,6 +42,24 @@ class JobsViewModel extends ChangeNotifier {
   int _currentTab = 0;
 
   final List<String> filters = ['Todas', 'Remoto', 'Híbrido', 'Presencial'];
+
+  // Component ViewModels
+  late final SimpleAppBarViewModel appBarViewModel = SimpleAppBarViewModel(
+    title: 'Vagas',
+    onBackPressed: goBack,
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.tune, color: gray_600),
+        onPressed: onSettingsTapped,
+      ),
+    ],
+  );
+
+  DSTabBarViewModel get tabBarViewModel => DSTabBarViewModel(
+    tabs: ['Recomendadas', 'Salvas (${_savedJobs.length})'],
+    selectedIndex: _currentTab,
+    onTabChanged: setTab,
+  );
 
   JobsViewModel({required this.coordinator, required this.service}) {
     _loadJobs();
@@ -108,5 +129,32 @@ class JobsViewModel extends ChangeNotifier {
   }
 
   void onSettingsTapped() {
+  }
+
+ //Devo colocar no design system?
+  String getTypeLabel(String type) {
+    switch (type) {
+      case 'remote':
+        return 'Remoto';
+      case 'hybrid':
+        return 'Híbrido';
+      case 'presential':
+        return 'Presencial';
+      default:
+        return type;
+    }
+  }
+
+  Color getTypeColor(String type) {
+    switch (type) {
+      case 'remote':
+        return blue_500;
+      case 'hybrid':
+        return yellow_marigold;
+      case 'presential':
+        return navy_700;
+      default:
+        return gray_600;
+    }
   }
 }

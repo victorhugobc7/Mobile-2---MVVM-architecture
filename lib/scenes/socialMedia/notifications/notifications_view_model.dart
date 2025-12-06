@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/shared/styles.dart';
+import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
+import '../../../DesignSystem/Components/EmptyState/empty_state_view_model.dart';
 import 'notifications_service.dart';
 
 class NotificationModel {
@@ -28,6 +32,28 @@ class NotificationsViewModel extends ChangeNotifier {
 
   List<NotificationModel> _notifications = [];
   bool _isLoading = false;
+
+  // Component ViewModels
+  SimpleAppBarViewModel get appBarViewModel => SimpleAppBarViewModel(
+    title: 'Notificações',
+    onBackPressed: goBack,
+    actions: [
+      if (unreadCount > 0)
+        TextButton(
+          onPressed: markAllAsRead,
+          child: Text(
+            'Marcar todas',
+            style: label2Regular.copyWith(color: blue_500),
+          ),
+        ),
+    ],
+  );
+
+  late final EmptyStateViewModel emptyStateViewModel = EmptyStateViewModel(
+    icon: Icons.notifications_none,
+    title: 'Nenhuma notificação',
+    subtitle: 'Você está em dia!',
+  );
 
   NotificationsViewModel({required this.coordinator, required this.service}) {
     _loadNotifications();

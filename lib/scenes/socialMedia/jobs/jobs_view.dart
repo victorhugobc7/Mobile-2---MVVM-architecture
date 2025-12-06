@@ -10,11 +10,9 @@ import '../../../DesignSystem/Components/EmptyState/empty_state_view_model.dart'
 import '../../../DesignSystem/Components/Tag/tag.dart';
 import '../../../DesignSystem/Components/Tag/tag_view_model.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar.dart';
-import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import '../../../DesignSystem/Components/DSTabBar/ds_tab_bar.dart';
-import '../../../DesignSystem/Components/DSTabBar/ds_tab_bar_view_model.dart';
-import '../../../DesignSystem/Components/JobCard/job_card.dart';
-import '../../../DesignSystem/Components/JobCard/job_card_view_model.dart';
+import '../../../DesignSystem/Components/Buttons/ActionButton/action_button.dart';
+import '../../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import 'jobs_view_model.dart';
 
 class JobsView extends StatelessWidget {
@@ -30,29 +28,12 @@ class JobsView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: gray_200,
-            appBar: SimpleAppBar.instantiate(
-              viewModel: SimpleAppBarViewModel(
-                title: 'Vagas',
-                onBackPressed: vm.goBack,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.tune, color: gray_600),
-                    onPressed: vm.onSettingsTapped,
-                  ),
-                ],
-              ),
-            ),
+            appBar: SimpleAppBar.instantiate(viewModel: vm.appBarViewModel),
             body: vm.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Column(
                     children: [
-                      DSTabBar.instantiate(
-                        viewModel: DSTabBarViewModel(
-                          tabs: ['Recomendadas', 'Salvas (${vm.savedJobs.length})'],
-                          selectedIndex: vm.currentTab,
-                          onTabChanged: vm.setTab,
-                        ),
-                      ),
+                      DSTabBar.instantiate(viewModel: vm.tabBarViewModel),
                       if (vm.currentTab == 0) _buildFilters(vm),
                       Expanded(
                         child: vm.currentTab == 0
@@ -73,20 +54,18 @@ class JobsView extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: extraSmall),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: small),
-        child: Row(
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        child: Wrap(
+          spacing: doubleXS,
           children: vm.filters.map((filter) {
             final isSelected = vm.selectedFilter == filter;
-            return Padding(
-              padding: EdgeInsets.only(right: doubleXS),
-              child: StyledFilterChip.instantiate(
+            return StyledFilterChip.instantiate(
                 viewModel: FilterChipViewModel(
                   label: filter,
                   isSelected: isSelected,
                   onSelected: (_) => vm.setFilter(filter),
                 ),
-              ),
-            );
+              );
           }).toList(),
         ),
       ),
@@ -156,26 +135,21 @@ class JobsView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      job.title,
-                      style: labelTextStyle.copyWith(color: blue_600, fontSize: 16),
+                      job.title, style: labelTextStyle.copyWith(color: blue_600, fontSize: 16),),
+                    SizedBox(height: 2),
+                    Text(
+                      job.company, style: label2Regular.copyWith(color: primaryInk, fontSize: 14),
                     ),
                     SizedBox(height: 2),
                     Text(
-                      job.company,
-                      style: label2Regular.copyWith(color: primaryInk, fontSize: 14),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      job.location,
-                      style: label2Regular.copyWith(color: gray_600, fontSize: 13),
+                      job.location, style: label2Regular.copyWith(color: gray_600, fontSize: 13),
                     ),
                   ],
                 ),
               ),
               IconButton(
                 icon: Icon(
-                  isSaved ? Icons.bookmark : Icons.bookmark_outline,
-                  color: isSaved ? blue_500 : gray_600,
+                  isSaved ? Icons.bookmark : Icons.bookmark_outline, color: isSaved ? blue_500 : gray_600,
                 ),
                 onPressed: () => vm.toggleSaveJob(job.id),
               ),
@@ -188,8 +162,8 @@ class JobsView extends StatelessWidget {
             children: [
               Tag.instantiate(
                 viewModel: TagViewModel(
-                  text: _getTypeLabel(job.type),
-                  color: _getTypeColor(job.type),
+                  text: vm.getTypeLabel(job.type),
+                  color: vm.getTypeColor(job.type),
                 ),
               ),
               Tag.instantiate(
@@ -226,53 +200,17 @@ class JobsView extends StatelessWidget {
             ],
           ),
           SizedBox(height: extraSmall),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () => vm.applyToJob(job.id),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: blue_500),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: Text(
-                    'Candidatar-se',
-                    style: label2Regular.copyWith(color: blue_500),
-                  ),
-                ),
-              ),
-            ],
+          ActionButton.instantiate(
+            viewModel: ActionButtonViewModel(
+              size: ActionButtonSize.medium,
+              style: ActionButtonStyle.outline,
+              text: 'Candidatar-se',
+              isExpanded: true,
+              onPressed: () => vm.applyToJob(job.id),
+            ),
           ),
         ],
       ),
     );
-  }
-
-  String _getTypeLabel(String type) {
-    switch (type) {
-      case 'remote':
-        return 'Remoto';
-      case 'hybrid':
-        return 'Híbrido';
-      case 'presential':
-        return 'Presencial';
-      default:
-        return type;
-    }
-  }
-
-  Color _getTypeColor(String type) {
-    switch (type) {
-      case 'remote':
-        return blue_500;
-      case 'hybrid':
-        return yellow_marigold;
-      case 'presential':
-        return navy_700;
-      default:
-        return gray_600;
-    }
   }
 }

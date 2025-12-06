@@ -3,11 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../DesignSystem/shared/colors.dart';
 import '../../../DesignSystem/shared/spacing.dart';
 import '../../../DesignSystem/Components/EmptyState/empty_state.dart';
-import '../../../DesignSystem/Components/EmptyState/empty_state_view_model.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar.dart';
-import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import '../../../DesignSystem/Components/SearchBar/search_bar.dart';
-import '../../../DesignSystem/Components/SearchBar/search_bar_viewmodel.dart';
 import '../../../DesignSystem/Components/MessageItem/message_item.dart';
 import '../../../DesignSystem/Components/MessageItem/message_item_view_model.dart';
 import 'messages_view_model.dart';
@@ -25,39 +22,18 @@ class MessagesView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: white,
-            appBar: SimpleAppBar.instantiate(
-              viewModel: SimpleAppBarViewModel(
-                title: 'Mensagens',
-                onBackPressed: vm.goBack,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.filter_list, color: gray_600),
-                    onPressed: vm.onFilterTapped,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit_square, color: gray_600),
-                    onPressed: vm.composeNewMessage,
-                  ),
-                ],
-              ),
-            ),
+            appBar: SimpleAppBar.instantiate(viewModel: vm.appBarViewModel),
             body: vm.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.all(small),
-                        child: DSSearchBar.instantiate(
-                          viewModel: SearchBarViewModel(
-                            placeholder: 'Pesquisar mensagens',
-                            isReadOnly: false,
-                            onChanged: vm.updateSearch,
-                          ),
-                        ),
+                        child: DSSearchBar.instantiate(viewModel: vm.searchBarViewModel),
                       ),
                       Expanded(
                         child: vm.messages.isEmpty
-                            ? _buildEmptyState()
+                            ? EmptyState.instantiate(viewModel: vm.emptyStateViewModel)
                             : ListView.separated(
                                 itemCount: vm.messages.length,
                                 separatorBuilder: (_, __) => const Divider(
@@ -76,16 +52,6 @@ class MessagesView extends StatelessWidget {
                   ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return EmptyState.instantiate(
-      viewModel: EmptyStateViewModel(
-        icon: Icons.message_outlined,
-        title: 'Nenhuma mensagem',
-        subtitle: 'Comece uma conversa!',
       ),
     );
   }

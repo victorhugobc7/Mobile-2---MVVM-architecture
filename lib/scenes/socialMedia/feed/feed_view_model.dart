@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import '../../../DesignSystem/Components/FeedAppBar/feed_app_bar_view_model.dart';
+import '../../../DesignSystem/Components/CreatePostCard/create_post_card_view_model.dart';
+import '../../../DesignSystem/Components/NavItem/nav_item_view_model.dart';
 import 'feed_service.dart';
 
 class PostModel {
@@ -38,6 +41,51 @@ class FeedViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
+  // Component ViewModels
+  late final FeedAppBarViewModel appBarViewModel = FeedAppBarViewModel(
+    logoAssetPath: 'lib/DesignSystem/Assets/ic_launcher_APP.svg',
+    searchPlaceholder: 'Pesquisar',
+    onSearchTapped: onSearchTapped,
+    onMessagesTapped: goToMessages,
+  );
+
+  late final CreatePostCardViewModel createPostCardViewModel = CreatePostCardViewModel(
+    avatarInitials: 'EU',
+    placeholder: 'Começar publicação',
+    onTap: goToCreatePost,
+  );
+
+  late final NavItemViewModel homeNavViewModel = NavItemViewModel(
+    icon: Icons.home_filled,
+    label: 'Início',
+    isActive: true,
+    onTap: onHomeTapped,
+  );
+
+  late final NavItemViewModel networkNavViewModel = NavItemViewModel(
+    icon: Icons.people_outline,
+    label: 'Rede',
+    onTap: goToNetwork,
+  );
+
+  late final NavItemViewModel postNavViewModel = NavItemViewModel(
+    icon: Icons.add_box_outlined,
+    label: 'Publicar',
+    onTap: goToCreatePost,
+  );
+
+  late final NavItemViewModel notificationsNavViewModel = NavItemViewModel(
+    icon: Icons.notifications_outlined,
+    label: 'Notificações',
+    onTap: goToNotifications,
+  );
+
+  late final NavItemViewModel jobsNavViewModel = NavItemViewModel(
+    icon: Icons.work_outline,
+    label: 'Vagas',
+    onTap: goToJobs,
+  );
+
   FeedViewModel({required this.coordinator, required this.service}) {
     _loadPosts();
   }
@@ -70,27 +118,27 @@ class FeedViewModel extends ChangeNotifier {
   }
 
   void onCommentTapped(String postId) {
-    // TODO: Navigate to comments or open comment sheet
+
   }
 
   void onShareTapped(String postId) {
-    // TODO: Open share options
+    
   }
 
   void onSendTapped(String postId) {
-    // TODO: Open send/message dialog
+    
   }
 
   void onMoreOptionsTapped(String postId) {
-    // TODO: Show more options menu
+    
   }
 
   void onSearchTapped() {
-    // TODO: Navigate to search screen
+    
   }
 
   void onHomeTapped() {
-    // Already on feed, no action needed
+    
   }
 
   void goToProfile() {

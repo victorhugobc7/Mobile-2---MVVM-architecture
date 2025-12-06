@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import '../../../DesignSystem/shared/colors.dart';
+import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
+import '../../../DesignSystem/Components/SearchBar/search_bar_viewmodel.dart';
+import '../../../DesignSystem/Components/EmptyState/empty_state_view_model.dart';
 import 'messages_service.dart';
 
 class MessageModel {
@@ -29,6 +33,34 @@ class MessagesViewModel extends ChangeNotifier {
   List<MessageModel> _messages = [];
   bool _isLoading = false;
   String _searchQuery = '';
+
+  // Component ViewModels
+  late final SimpleAppBarViewModel appBarViewModel = SimpleAppBarViewModel(
+    title: 'Mensagens',
+    onBackPressed: goBack,
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.filter_list, color: gray_600),
+        onPressed: onFilterTapped,
+      ),
+      IconButton(
+        icon: const Icon(Icons.edit_square, color: gray_600),
+        onPressed: composeNewMessage,
+      ),
+    ],
+  );
+
+  late final SearchBarViewModel searchBarViewModel = SearchBarViewModel(
+    placeholder: 'Pesquisar mensagens',
+    isReadOnly: false,
+    onChanged: updateSearch,
+  );
+
+  late final EmptyStateViewModel emptyStateViewModel = EmptyStateViewModel(
+    icon: Icons.message_outlined,
+    title: 'Nenhuma mensagem',
+    subtitle: 'Comece uma conversa!',
+  );
 
   MessagesViewModel({required this.coordinator, required this.service}) {
     _loadMessages();

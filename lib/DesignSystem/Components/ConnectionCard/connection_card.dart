@@ -3,6 +3,8 @@ import 'connection_card_view_model.dart';
 import '../../shared/colors.dart';
 import '../../shared/styles.dart';
 import '../../shared/spacing.dart';
+import '../Buttons/ActionButton/action_button.dart';
+import '../Buttons/ActionButton/action_button_view_model.dart';
 
 class ConnectionCard extends StatelessWidget {
   final ConnectionCardViewModel viewModel;
@@ -107,22 +109,12 @@ class ConnectionCard extends StatelessWidget {
 
   Widget _buildConnectButton() {
     final isConnected = viewModel.isConnected;
-    return OutlinedButton(
-      onPressed: viewModel.onConnectTapped,
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(
-          color: isConnected ? green_confirmation : blue_500,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: medium, vertical: tripleXS),
-      ),
-      child: Text(
-        isConnected ? 'Pendente' : 'Conectar',
-        style: label2Regular.copyWith(
-          color: isConnected ? green_confirmation : blue_500,
-        ),
+    return ActionButton.instantiate(
+      viewModel: ActionButtonViewModel(
+        size: ActionButtonSize.small,
+        style: isConnected ? ActionButtonStyle.outlineSuccess : ActionButtonStyle.outline,
+        text: isConnected ? 'Pendente' : 'Conectar',
+        onPressed: viewModel.onConnectTapped ?? () {},
       ),
     );
   }

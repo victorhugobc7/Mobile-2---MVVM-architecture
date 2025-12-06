@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../DesignSystem/shared/colors.dart';
-import '../../../DesignSystem/shared/styles.dart';
 import '../../../DesignSystem/Components/EmptyState/empty_state.dart';
-import '../../../DesignSystem/Components/EmptyState/empty_state_view_model.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar.dart';
-import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import '../../../DesignSystem/Components/NotificationItem/notification_item.dart';
 import '../../../DesignSystem/Components/NotificationItem/notification_item_view_model.dart';
 import 'notifications_view_model.dart';
@@ -23,26 +20,11 @@ class NotificationsView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: white,
-            appBar: SimpleAppBar.instantiate(
-              viewModel: SimpleAppBarViewModel(
-                title: 'Notificações',
-                onBackPressed: vm.goBack,
-                actions: [
-                  if (vm.unreadCount > 0)
-                    TextButton(
-                      onPressed: vm.markAllAsRead,
-                      child: Text(
-                        'Marcar todas',
-                        style: label2Regular.copyWith(color: blue_500),
-                      ),
-                    ),
-                ],
-              ),
-            ),
+            appBar: SimpleAppBar.instantiate(viewModel: vm.appBarViewModel),
             body: vm.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : vm.notifications.isEmpty
-                    ? _buildEmptyState()
+                    ? EmptyState.instantiate(viewModel: vm.emptyStateViewModel)
                     : ListView.separated(
                         itemCount: vm.notifications.length,
                         separatorBuilder: (_, __) => const Divider(height: 1),
@@ -55,16 +37,6 @@ class NotificationsView extends StatelessWidget {
                       ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return EmptyState.instantiate(
-      viewModel: EmptyStateViewModel(
-        icon: Icons.notifications_none,
-        title: 'Nenhuma notificação',
-        subtitle: 'Você está em dia!',
       ),
     );
   }

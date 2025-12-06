@@ -22,7 +22,7 @@ class DSSearchBar extends StatelessWidget {
           height: 36,
           decoration: BoxDecoration(
             color: gray_200,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.zero,
           ),
           child: Row(
             children: [
@@ -43,7 +43,7 @@ class DSSearchBar extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         color: gray_200,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.zero,
       ),
       child: TextField(
         controller: viewModel.controller,

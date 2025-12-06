@@ -4,7 +4,6 @@ import '../../../DesignSystem/shared/colors.dart';
 import '../../../DesignSystem/shared/styles.dart';
 import '../../../DesignSystem/shared/spacing.dart';
 import '../../../DesignSystem/Components/StatCard/stat_card.dart';
-import '../../../DesignSystem/Components/StatCard/stat_card_view_model.dart';
 import '../../../DesignSystem/Components/ConnectionCard/connection_card.dart';
 import '../../../DesignSystem/Components/ConnectionCard/connection_card_view_model.dart';
 import '../../../DesignSystem/Components/InvitationCard/invitation_card.dart';
@@ -12,7 +11,6 @@ import '../../../DesignSystem/Components/InvitationCard/invitation_card_view_mod
 import '../../../DesignSystem/Components/SectionHeader/section_header.dart';
 import '../../../DesignSystem/Components/SectionHeader/section_header_view_model.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar.dart';
-import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import 'network_view_model.dart';
 
 class NetworkView extends StatelessWidget {
@@ -28,18 +26,7 @@ class NetworkView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: gray_200,
-            appBar: SimpleAppBar.instantiate(
-              viewModel: SimpleAppBarViewModel(
-                title: 'Minha rede',
-                onBackPressed: vm.goBack,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.search, color: gray_600),
-                    onPressed: vm.onSearchTapped,
-                  ),
-                ],
-              ),
-            ),
+            appBar: SimpleAppBar.instantiate(viewModel: vm.appBarViewModel),
             body: vm.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
@@ -59,25 +46,7 @@ class NetworkView extends StatelessWidget {
   }
 
   Widget _buildStatsSection(NetworkViewModel vm) {
-    return StatCardRow.instantiate(
-      stats: [
-        StatCardViewModel(
-          icon: Icons.people,
-          value: vm.connectionsCount.toString(),
-          label: 'Conexões',
-        ),
-        StatCardViewModel(
-          icon: Icons.contacts,
-          value: '124',
-          label: 'Contatos',
-        ),
-        StatCardViewModel(
-          icon: Icons.group_add,
-          value: '89',
-          label: 'Seguindo',
-        ),
-      ],
-    );
+    return StatCardRow.instantiate(stats: vm.statsViewModels);
   }
 
   Widget _buildInvitationsSection(NetworkViewModel vm) {

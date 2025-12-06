@@ -37,7 +37,7 @@ class CreatePostCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: small, vertical: extraSmall),
                 decoration: BoxDecoration(
                   border: Border.all(color: gray_400),
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.zero,
                 ),
                 child: Text(
                   viewModel.placeholder,

@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import '../resources/shared/app_coordinator.dart';
 
-//FICAM NA PASTA application
 void main() {
-  final coordinator = AppCoordinator();
-  runApp(Application(coordinator: coordinator));
+  runApp(const MyApp());
 }
 
-class Application extends StatelessWidget {
-  final AppCoordinator coordinator;
-  const Application({super.key, required this.coordinator});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: "MVVC Sample",
-        navigatorKey: coordinator.navigatorKey,
-        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-        home: coordinator.startApp());
+    final coordinator = AppCoordinator();
+
+    return MaterialApp(
+      title: 'aplicativo massa',
+      navigatorKey: coordinator.navigatorKey,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: coordinator.startApp(),
+    );
   }
 }
