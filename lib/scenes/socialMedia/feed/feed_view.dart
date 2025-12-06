@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../../DesignSystem/shared/colors.dart';
-import '../../../DesignSystem/shared/styles.dart';
 import '../../../DesignSystem/shared/spacing.dart';
-import '../../../DesignSystem/Components/BaseProfile/base_profile.dart';
-import '../../../DesignSystem/Components/BaseProfile/base_profile_view_model.dart';
-import '../../../DesignSystem/Components/Avatar/avatar.dart';
-import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
+import '../../../DesignSystem/Components/CreatePostCard/create_post_card.dart';
+import '../../../DesignSystem/Components/CreatePostCard/create_post_card_view_model.dart';
+import '../../../DesignSystem/Components/PostCard/post_card.dart';
+import '../../../DesignSystem/Components/PostCard/post_card_view_model.dart';
+import '../../../DesignSystem/Components/NavItem/nav_item.dart';
+import '../../../DesignSystem/Components/NavItem/nav_item_view_model.dart';
+import '../../../DesignSystem/Components/FeedAppBar/feed_app_bar.dart';
+import '../../../DesignSystem/Components/FeedAppBar/feed_app_bar_view_model.dart';
 import 'feed_view_model.dart';
 
 class FeedView extends StatelessWidget {
@@ -23,7 +25,14 @@ class FeedView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: gray_200,
-            appBar: _buildAppBar(vm),
+            appBar: FeedAppBar.instantiate(
+              viewModel: FeedAppBarViewModel(
+                logoAssetPath: 'lib/DesignSystem/Assets/ic_launcher_APP.svg',
+                searchPlaceholder: 'Pesquisar',
+                onSearchTapped: vm.onSearchTapped,
+                onMessagesTapped: vm.goToMessages,
+              ),
+            ),
             body: vm.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
@@ -46,223 +55,34 @@ class FeedView extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar(FeedViewModel vm) {
-    return AppBar(
-      backgroundColor: white,
-      elevation: 1,
-      leading: Padding(
-        padding: EdgeInsets.all(extraSmall),
-        child: SvgPicture.asset(
-          'lib/DesignSystem/Assets/ic_launcher_APP.svg',
-          width: 40,
-          height: 40,
-          placeholderBuilder: (context) => Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: blue_500,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.work, color: white, size: 24),
-          ),
-        ),
-      ),
-      title: GestureDetector(
-        onTap: vm.onSearchTapped,
-        child: Container(
-          height: 36,
-          decoration: BoxDecoration(
-            color: gray_200,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Row(
-            children: [
-              SizedBox(width: extraSmall),
-              Icon(Icons.search, color: gray_600, size: 20),
-              SizedBox(width: doubleXS),
-              Text(
-                'Pesquisar',
-                style: paragraph2Medium.copyWith(color: gray_600),
-              ),
-            ],
-          ),
-        ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.message_outlined, color: gray_600),
-          onPressed: vm.goToMessages,
-        ),
-      ],
-    );
-  }
-
   Widget _buildCreatePostCard(FeedViewModel vm) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: tripleXS),
-      padding: EdgeInsets.all(small),
-      color: white,
-      child: Row(
-        children: [
-          Avatar.instantiate(
-            viewModel: AvatarViewModel(
-              initials: 'EU',
-              size: 48,
-            ),
-          ),
-          SizedBox(width: extraSmall),
-          Expanded(
-            child: GestureDetector(
-              onTap: vm.goToCreatePost,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: small, vertical: extraSmall),
-                decoration: BoxDecoration(
-                  border: Border.all(color: gray_400),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Text(
-                  'Começar publicação',
-                  style: paragraph2Medium.copyWith(color: gray_600),
-                ),
-              ),
-            ),
-          ),
-        ],
+    return CreatePostCard.instantiate(
+      viewModel: CreatePostCardViewModel(
+        avatarInitials: 'EU',
+        placeholder: 'Começar publicação',
+        onTap: vm.goToCreatePost,
       ),
     );
   }
 
   Widget _buildPostCard(PostModel post, FeedViewModel vm) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: tripleXS),
-      color: white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(small),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: BaseProfile.instantiate(
-                    viewModel: BaseProfileViewModel(
-                      name: post.authorName,
-                      company: post.authorTitle.split(' na ').length > 1 
-                          ? post.authorTitle.split(' na ')[1] 
-                          : '',
-                      title: post.authorTitle.split(' na ')[0],
-                      avatarInitials: post.authorAvatar,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.more_horiz, color: gray_600),
-                  onPressed: () => vm.onMoreOptionsTapped(post.id),
-                ),
-              ],
-            ),
-          ),
-          
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: small),
-            child: Text(
-              post.timeAgo,
-              style: label2Regular.copyWith(color: gray_600),
-            ),
-          ),
-
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: small),
-            child: Text(
-              post.content,
-              style: paragraph2Medium.copyWith(color: primaryInk, height: 1.4),
-            ),
-          ),
-
-          Padding(
-            padding: EdgeInsets.all(small),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.thumb_up,
-                  size: 16,
-                  color: blue_500,
-                ),
-                SizedBox(width: tripleXS),
-                Text(
-                  '${post.likes + (post.isLiked ? 1 : 0)}',
-                  style: label2Regular.copyWith(color: gray_600),
-                ),
-                const Spacer(),
-                Text(
-                  '${post.comments} comentários • ${post.shares} compartilhamentos',
-                  style: label2Regular.copyWith(color: gray_600),
-                ),
-              ],
-            ),
-          ),
-
-          const Divider(height: 1),
-
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: tripleXS),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildActionButton(
-                  icon: post.isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                  label: 'Gostei',
-                  isActive: post.isLiked,
-                  onTap: () => vm.toggleLike(post.id),
-                ),
-                _buildActionButton(
-                  icon: Icons.comment_outlined,
-                  label: 'Comentar',
-                  onTap: () => vm.onCommentTapped(post.id),
-                ),
-                _buildActionButton(
-                  icon: Icons.share_outlined,
-                  label: 'Compartilhar',
-                  onTap: () => vm.onShareTapped(post.id),
-                ),
-                _buildActionButton(
-                  icon: Icons.send_outlined,
-                  label: 'Enviar',
-                  onTap: () => vm.onSendTapped(post.id),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    bool isActive = false,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: extraSmall, horizontal: doubleXS),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 20,
-              color: isActive ? blue_500 : gray_600,
-            ),
-            SizedBox(height: tripleXS),
-            Text(
-              label,
-              style: label2Regular.copyWith(color: isActive ? blue_500 : gray_600),
-            ),
-          ],
-        ),
+    return PostCard.instantiate(
+      viewModel: PostCardViewModel(
+        id: post.id,
+        authorName: post.authorName,
+        authorTitle: post.authorTitle,
+        authorAvatar: post.authorAvatar,
+        content: post.content,
+        likes: post.likes,
+        comments: post.comments,
+        shares: post.shares,
+        timeAgo: post.timeAgo,
+        isLiked: post.isLiked,
+        onLikeTapped: () => vm.toggleLike(post.id),
+        onCommentTapped: () => vm.onCommentTapped(post.id),
+        onShareTapped: () => vm.onShareTapped(post.id),
+        onSendTapped: () => vm.onSendTapped(post.id),
+        onMoreOptionsTapped: () => vm.onMoreOptionsTapped(post.id),
       ),
     );
   }
@@ -279,61 +99,45 @@ class FeedView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(
-                icon: Icons.home_filled,
-                label: 'Início',
-                isActive: true,
-                onTap: vm.onHomeTapped,
+              NavItem.instantiate(
+                viewModel: NavItemViewModel(
+                  icon: Icons.home_filled,
+                  label: 'Início',
+                  isActive: true,
+                  onTap: vm.onHomeTapped,
+                ),
               ),
-              _buildNavItem(
-                icon: Icons.people_outline,
-                label: 'Rede',
-                onTap: vm.goToNetwork,
+              NavItem.instantiate(
+                viewModel: NavItemViewModel(
+                  icon: Icons.people_outline,
+                  label: 'Rede',
+                  onTap: vm.goToNetwork,
+                ),
               ),
-              _buildNavItem(
-                icon: Icons.add_box_outlined,
-                label: 'Publicar',
-                onTap: vm.goToCreatePost,
+              NavItem.instantiate(
+                viewModel: NavItemViewModel(
+                  icon: Icons.add_box_outlined,
+                  label: 'Publicar',
+                  onTap: vm.goToCreatePost,
+                ),
               ),
-              _buildNavItem(
-                icon: Icons.notifications_outlined,
-                label: 'Notificações',
-                onTap: vm.goToNotifications,
+              NavItem.instantiate(
+                viewModel: NavItemViewModel(
+                  icon: Icons.notifications_outlined,
+                  label: 'Notificações',
+                  onTap: vm.goToNotifications,
+                ),
               ),
-              _buildNavItem(
-                icon: Icons.work_outline,
-                label: 'Vagas',
-                onTap: vm.goToJobs,
+              NavItem.instantiate(
+                viewModel: NavItemViewModel(
+                  icon: Icons.work_outline,
+                  label: 'Vagas',
+                  onTap: vm.goToJobs,
+                ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem({
-    required IconData icon,
-    required String label,
-    bool isActive = false,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? primaryInk : gray_600,
-            size: 24,
-          ),
-          SizedBox(height: tripleXS),
-          Text(
-            label,
-            style: label2Regular.copyWith(color: isActive ? primaryInk : gray_600),
-          ),
-        ],
       ),
     );
   }

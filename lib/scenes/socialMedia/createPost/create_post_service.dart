@@ -1,4 +1,25 @@
+class CurrentUserModel {
+  final String name;
+  final String avatar;
+  final String headline;
+
+  CurrentUserModel({
+    required this.name,
+    required this.avatar,
+    required this.headline,
+  });
+}
+
 class CreatePostService {
+  Future<CurrentUserModel> fetchCurrentUser() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    return CurrentUserModel(
+      name: 'Victor Hugo',
+      avatar: 'VH',
+      headline: 'Desenvolvedor Mobile | Flutter',
+    );
+  }
+
   Future<bool> createPost({
     required String content,
     String? imagePath,

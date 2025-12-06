@@ -16,25 +16,20 @@ class StyledInputField extends StatefulWidget {
 
     Widget titleWidget = viewModel.title?.isNotEmpty == true
         ? Padding(
-        padding: const EdgeInsets.only(right: medium),
+        padding: const EdgeInsets.only(bottom: extraSmall),
         child: Text(viewModel.title as String, style: labelTextStyle)
     )
         : const SizedBox.shrink();
 
     Widget inputField = StyledInputField._(viewModel: viewModel);
 
-    // 3. Return a Row, but wrap the inputField in Expanded
-    //    The Row will be vertically centered, which might not be ideal
-    //    for label alignment. See alternative below.
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center, // Align items vertically in the Row
+    // Return a Column to stack title on top of input field
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        // The title takes up only the space it needs
         titleWidget,
-        // The input field takes up all the remaining space
-        Expanded(
-          child: inputField,
-        ),
+        inputField,
       ],
     );
   }
@@ -96,21 +91,26 @@ class StyledInputFieldState extends State<StyledInputField> {
             )
           : widget.viewModel.suffixIcon,
       fillColor: widget.viewModel.isEnabled ? white : gray_100,
-      labelText: widget.viewModel.placeholder.isNotEmpty ? widget.viewModel.placeholder : null,
-      labelStyle: labelTextStyle,
+      hintText: widget.viewModel.placeholder.isNotEmpty ? widget.viewModel.placeholder : null,
+      hintStyle: labelTextStyle.copyWith(color: gray_500),
       border: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
         borderSide: const BorderSide(color: gray_600),
       ),
       errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
         borderSide: const BorderSide(color: red_error),
       ),
       focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
         borderSide: const BorderSide(color: blue_500),
       ),
       enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
         borderSide: const BorderSide(color: gray_600),
       ),
       disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
         borderSide: const BorderSide(color: gray_500),
       ),
       errorText: errorMsg,

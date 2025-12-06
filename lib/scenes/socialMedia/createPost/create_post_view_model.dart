@@ -7,16 +7,39 @@ class CreatePostViewModel extends ChangeNotifier {
   final CreatePostService service;
   final TextEditingController contentController = TextEditingController();
 
+  bool _isLoading = true;
   bool _isPosting = false;
   String? _selectedImage;
   bool _anyoneCanComment = true;
+  CurrentUserModel? _currentUser;
 
-  CreatePostViewModel({required this.coordinator, required this.service});
+  CreatePostViewModel({required this.coordinator, required this.service}) {
+    _loadCurrentUser();
+  }
 
+  bool get isLoading => _isLoading;
   bool get isPosting => _isPosting;
   String? get selectedImage => _selectedImage;
   bool get anyoneCanComment => _anyoneCanComment;
   bool get canPost => contentController.text.trim().isNotEmpty;
+  CurrentUserModel? get currentUser => _currentUser;
+
+  String get userName => _currentUser?.name ?? '';
+  String get userAvatar => _currentUser?.avatar ?? '';
+
+  Future<void> _loadCurrentUser() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _currentUser = await service.fetchCurrentUser();
+    } catch (e) {
+      // Handle error
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
 
   void updateContent() {
     notifyListeners();

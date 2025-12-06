@@ -5,6 +5,10 @@ import '../../../DesignSystem/shared/styles.dart';
 import '../../../DesignSystem/shared/spacing.dart';
 import '../../../DesignSystem/Components/Avatar/avatar.dart';
 import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
+import '../../../DesignSystem/Components/IconLabelButton/icon_label_button.dart';
+import '../../../DesignSystem/Components/IconLabelButton/icon_label_button_view_model.dart';
+import '../../../DesignSystem/Components/CreatePostAppBar/create_post_app_bar.dart';
+import '../../../DesignSystem/Components/CreatePostAppBar/create_post_app_bar_view_model.dart';
 import 'create_post_view_model.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -20,79 +24,47 @@ class CreatePostView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: white,
-            appBar: AppBar(
-              backgroundColor: white,
-              elevation: 1,
-              leading: IconButton(
-                icon: const Icon(Icons.close, color: primaryInk),
-                onPressed: vm.goBack,
+            appBar: CreatePostAppBar.instantiate(
+              viewModel: CreatePostAppBarViewModel(
+                onBackPressed: vm.goBack,
+                onPostPressed: vm.submitPost,
+                isPostEnabled: vm.canPost,
+                isPosting: vm.isPosting,
               ),
-              title: Text(
-                'Criar publicação',
-                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
-              ),
-              actions: [
-                Padding(
-                  padding: EdgeInsets.only(right: doubleXS),
-                  child: TextButton(
-                    onPressed: vm.canPost && !vm.isPosting ? vm.submitPost : null,
-                    style: TextButton.styleFrom(
-                      backgroundColor: vm.canPost ? blue_500 : gray_300,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: small),
-                    ),
-                    child: vm.isPosting
-                        ? SizedBox(
-                            width: small,
-                            height: small,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: white,
-                            ),
-                          )
-                        : Text(
-                            'Publicar',
-                            style: label2Regular.copyWith(
-                              color: vm.canPost ? white : gray_500,
-                            ),
+            ),
+            body: vm.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildUserHeader(vm),
+                              _buildContentInput(vm),
+                              if (vm.selectedImage != null) _buildImagePreview(vm),
+                            ],
                           ),
+                        ),
+                      ),
+                      _buildBottomBar(vm),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            body: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildUserHeader(),
-                        _buildContentInput(vm),
-                        if (vm.selectedImage != null) _buildImagePreview(vm),
-                      ],
-                    ),
-                  ),
-                ),
-                _buildBottomBar(vm),
-              ],
-            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildUserHeader() {
+  Widget _buildUserHeader(CreatePostViewModel vm) {
     return Padding(
       padding: EdgeInsets.all(small),
       child: Row(
         children: [
           Avatar.instantiate(
             viewModel: AvatarViewModel(
-              initials: 'VH',
+              initials: vm.userAvatar,
               size: 48,
             ),
           ),
@@ -101,7 +73,7 @@ class CreatePostView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Victor Hugo',
+                vm.userName,
                 style: labelTextStyle.copyWith(color: primaryInk, fontSize: 16),
               ),
               Container(
@@ -197,25 +169,41 @@ class CreatePostView extends StatelessWidget {
           children: [
             Row(
               children: [
-                _buildToolButton(
-                  icon: Icons.image,
-                  label: 'Foto',
-                  onTap: vm.selectImage,
+                Expanded(
+                  child: IconLabelButton.instantiate(
+                    viewModel: IconLabelButtonViewModel(
+                      icon: Icons.image,
+                      label: 'Foto',
+                      onTap: vm.selectImage,
+                    ),
+                  ),
                 ),
-                _buildToolButton(
-                  icon: Icons.videocam,
-                  label: 'Vídeo',
-                  onTap: vm.onAddVideoTapped,
+                Expanded(
+                  child: IconLabelButton.instantiate(
+                    viewModel: IconLabelButtonViewModel(
+                      icon: Icons.videocam,
+                      label: 'Vídeo',
+                      onTap: vm.onAddVideoTapped,
+                    ),
+                  ),
                 ),
-                _buildToolButton(
-                  icon: Icons.event,
-                  label: 'Evento',
-                  onTap: vm.onAddEventTapped,
+                Expanded(
+                  child: IconLabelButton.instantiate(
+                    viewModel: IconLabelButtonViewModel(
+                      icon: Icons.event,
+                      label: 'Evento',
+                      onTap: vm.onAddEventTapped,
+                    ),
+                  ),
                 ),
-                _buildToolButton(
-                  icon: Icons.article,
-                  label: 'Artigo',
-                  onTap: vm.onAddArticleTapped,
+                Expanded(
+                  child: IconLabelButton.instantiate(
+                    viewModel: IconLabelButtonViewModel(
+                      icon: Icons.article,
+                      label: 'Artigo',
+                      onTap: vm.onAddArticleTapped,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -237,31 +225,6 @@ class CreatePostView extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildToolButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: doubleXS),
-          child: Column(
-            children: [
-              Icon(icon, color: gray_600, size: 24),
-              SizedBox(height: tripleXS),
-              Text(
-                label,
-                style: label2Regular.copyWith(color: gray_600, fontSize: 11),
-              ),
-            ],
-          ),
         ),
       ),
     );

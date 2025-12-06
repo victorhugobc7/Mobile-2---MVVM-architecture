@@ -66,7 +66,7 @@ class JobsViewModel extends ChangeNotifier {
       _jobs = await service.fetchJobs();
       _savedJobs = await service.fetchSavedJobs();
     } catch (e) {
-      // Handle error
+
     }
 
     _isLoading = false;

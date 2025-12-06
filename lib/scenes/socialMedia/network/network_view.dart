@@ -11,6 +11,8 @@ import '../../../DesignSystem/Components/InvitationCard/invitation_card.dart';
 import '../../../DesignSystem/Components/InvitationCard/invitation_card_view_model.dart';
 import '../../../DesignSystem/Components/SectionHeader/section_header.dart';
 import '../../../DesignSystem/Components/SectionHeader/section_header_view_model.dart';
+import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar.dart';
+import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import 'network_view_model.dart';
 
 class NetworkView extends StatelessWidget {
@@ -26,7 +28,18 @@ class NetworkView extends StatelessWidget {
         builder: (context, vm, child) {
           return Scaffold(
             backgroundColor: gray_200,
-            appBar: _buildAppBar(vm),
+            appBar: SimpleAppBar.instantiate(
+              viewModel: SimpleAppBarViewModel(
+                title: 'Minha rede',
+                onBackPressed: vm.goBack,
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.search, color: gray_600),
+                    onPressed: vm.onSearchTapped,
+                  ),
+                ],
+              ),
+            ),
             body: vm.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
@@ -42,27 +55,6 @@ class NetworkView extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  AppBar _buildAppBar(NetworkViewModel vm) {
-    return AppBar(
-      backgroundColor: white,
-      elevation: 1,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: primaryInk),
-        onPressed: vm.goBack,
-      ),
-      title: Text(
-        'Minha rede',
-        style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.search, color: gray_600),
-          onPressed: vm.onSearchTapped,
-        ),
-      ],
     );
   }
 

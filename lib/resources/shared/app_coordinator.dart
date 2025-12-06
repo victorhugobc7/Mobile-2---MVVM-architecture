@@ -55,7 +55,6 @@ class AppCoordinator {
     );
   }
 
-  // Social Media Navigation
   void goToFeed() {
     _navigator?.push(
       MaterialPageRoute(

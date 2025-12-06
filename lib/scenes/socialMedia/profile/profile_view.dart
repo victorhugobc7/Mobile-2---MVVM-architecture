@@ -3,8 +3,16 @@ import 'package:provider/provider.dart';
 import '../../../DesignSystem/shared/colors.dart';
 import '../../../DesignSystem/shared/styles.dart';
 import '../../../DesignSystem/shared/spacing.dart';
-import '../../../DesignSystem/Components/Avatar/avatar.dart';
-import '../../../DesignSystem/Components/Avatar/avatar_view_model.dart';
+import '../../../DesignSystem/Components/SkillChip/skill_chip.dart';
+import '../../../DesignSystem/Components/SkillChip/skill_chip_view_model.dart';
+import '../../../DesignSystem/Components/ExperienceItem/experience_item.dart';
+import '../../../DesignSystem/Components/ExperienceItem/experience_item_view_model.dart';
+import '../../../DesignSystem/Components/EducationItem/education_item.dart';
+import '../../../DesignSystem/Components/EducationItem/education_item_view_model.dart';
+import '../../../DesignSystem/Components/ProfileHeader/profile_header.dart';
+import '../../../DesignSystem/Components/ProfileHeader/profile_header_view_model.dart';
+import '../../../DesignSystem/Components/ProfileSectionHeader/profile_section_header.dart';
+import '../../../DesignSystem/Components/ProfileSectionHeader/profile_section_header_view_model.dart';
 import 'profile_view_model.dart';
 
 class ProfileView extends StatelessWidget {
@@ -81,124 +89,18 @@ class ProfileView extends StatelessWidget {
 
   Widget _buildProfileHeader(ProfileViewModel vm) {
     final profile = vm.profile!;
-    return Container(
-      color: white,
-      child: Column(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(height: 60, color: blue_600),
-              Positioned(
-                left: small,
-                bottom: -40,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: white, width: 4),
-                  ),
-                  child: Avatar.instantiate(
-                    viewModel: AvatarViewModel(
-                      initials: profile.avatar,
-                      size: 100,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                right: small,
-                bottom: -20,
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: vm.shareProfile,
-                      icon: const Icon(Icons.share, color: blue_500),
-                    ),
-                    IconButton(
-                      onPressed: vm.toggleEditing,
-                      icon: Icon(
-                        vm.isEditing ? Icons.close : Icons.edit,
-                        color: blue_500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 50),
-          Padding(
-            padding: EdgeInsets.all(small),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  profile.name,
-                  style: title4.copyWith(color: primaryInk),
-                ),
-                SizedBox(height: tripleXS),
-                Text(
-                  profile.headline,
-                  style: label2Regular.copyWith(color: secondaryInk),
-                ),
-                SizedBox(height: doubleXS),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on, size: 16, color: gray_600),
-                    SizedBox(width: tripleXS),
-                    Text(
-                      profile.location,
-                      style: label2Regular.copyWith(color: gray_600),
-                    ),
-                  ],
-                ),
-                SizedBox(height: doubleXS),
-                Text(
-                  '${profile.connections}+ conexões',
-                  style: labelTextStyle.copyWith(color: blue_500),
-                ),
-                SizedBox(height: small),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: vm.onConnectTapped,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: blue_500,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: extraSmall),
-                        ),
-                        child: Text(
-                          'Aberto a',
-                          style: label2Regular.copyWith(color: white),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: doubleXS),
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: vm.onAddSectionTapped,
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: blue_500),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: extraSmall),
-                        ),
-                        child: Text(
-                          'Adicionar seção',
-                          style: label2Regular.copyWith(color: blue_500),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+    return ProfileHeader.instantiate(
+      viewModel: ProfileHeaderViewModel(
+        name: profile.name,
+        headline: profile.headline,
+        location: profile.location,
+        avatar: profile.avatar,
+        connections: profile.connections,
+        isEditing: vm.isEditing,
+        onSharePressed: vm.shareProfile,
+        onEditToggle: vm.toggleEditing,
+        onConnectPressed: vm.onConnectTapped,
+        onAddSectionPressed: vm.onAddSectionTapped,
       ),
     );
   }
@@ -324,19 +226,12 @@ class ProfileView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Sobre',
-                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
-              ),
-              if (vm.isEditing)
-                IconButton(
-                  icon: const Icon(Icons.edit, size: 20, color: gray_600),
-                  onPressed: vm.onEditAboutTapped,
-                ),
-            ],
+          ProfileSectionHeader.instantiate(
+            viewModel: ProfileSectionHeaderViewModel(
+              title: 'Sobre',
+              showEditButton: vm.isEditing,
+              onEditPressed: vm.onEditAboutTapped,
+            ),
           ),
           SizedBox(height: extraSmall),
           Text(
@@ -357,81 +252,25 @@ class ProfileView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Experiência',
-                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
-              ),
-              if (vm.isEditing)
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.add, size: 20, color: gray_600),
-                      onPressed: vm.onAddExperienceTapped,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.edit, size: 20, color: gray_600),
-                      onPressed: vm.onEditExperienceTapped,
-                    ),
-                  ],
-                ),
-            ],
+          ProfileSectionHeader.instantiate(
+            viewModel: ProfileSectionHeaderViewModel(
+              title: 'Experiência',
+              showEditButton: vm.isEditing,
+              showAddButton: vm.isEditing,
+              onAddPressed: vm.onAddExperienceTapped,
+              onEditPressed: vm.onEditExperienceTapped,
+            ),
           ),
           SizedBox(height: extraSmall),
-          ...profile.experiences.map((exp) => _buildExperienceItem(exp)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildExperienceItem(ExperienceModel experience) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: small),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: gray_200,
-              borderRadius: BorderRadius.circular(4),
+          ...profile.experiences.map((exp) => ExperienceItem.instantiate(
+            viewModel: ExperienceItemViewModel(
+              title: exp.title,
+              company: exp.company,
+              duration: exp.duration,
+              location: exp.location,
+              description: exp.description,
             ),
-            child: const Icon(Icons.business, color: gray_600),
-          ),
-          SizedBox(width: extraSmall),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  experience.title,
-                  style: labelTextStyle.copyWith(color: primaryInk),
-                ),
-                Text(
-                  experience.company,
-                  style: label2Regular.copyWith(color: secondaryInk),
-                ),
-                Text(
-                  experience.duration,
-                  style: label2Regular.copyWith(color: gray_600),
-                ),
-                Text(
-                  experience.location,
-                  style: label2Regular.copyWith(color: gray_600),
-                ),
-                if (experience.description != null) ...[
-                  SizedBox(height: doubleXS),
-                  Text(
-                    experience.description!,
-                    style: label2Regular.copyWith(color: secondaryInk, fontSize: 13),
-                  ),
-                ],
-              ],
-            ),
-          ),
+          )),
         ],
       ),
     );
@@ -446,62 +285,21 @@ class ProfileView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Formação acadêmica',
-                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
-              ),
-              if (vm.isEditing)
-                IconButton(
-                  icon: const Icon(Icons.add, size: 20, color: gray_600),
-                  onPressed: vm.onAddEducationTapped,
-                ),
-            ],
+          ProfileSectionHeader.instantiate(
+            viewModel: ProfileSectionHeaderViewModel(
+              title: 'Formação acadêmica',
+              showAddButton: vm.isEditing,
+              onAddPressed: vm.onAddEducationTapped,
+            ),
           ),
           SizedBox(height: extraSmall),
-          ...profile.education.map((edu) => _buildEducationItem(edu)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEducationItem(EducationModel education) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: small),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: gray_200,
-              borderRadius: BorderRadius.circular(4),
+          ...profile.education.map((edu) => EducationItem.instantiate(
+            viewModel: EducationItemViewModel(
+              institution: edu.institution,
+              degree: edu.degree,
+              period: edu.period,
             ),
-            child: const Icon(Icons.school, color: gray_600),
-          ),
-          SizedBox(width: extraSmall),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  education.institution,
-                  style: labelTextStyle.copyWith(color: primaryInk),
-                ),
-                Text(
-                  education.degree,
-                  style: label2Regular.copyWith(color: secondaryInk),
-                ),
-                Text(
-                  education.period,
-                  style: label2Regular.copyWith(color: gray_600),
-                ),
-              ],
-            ),
-          ),
+          )),
         ],
       ),
     );
@@ -516,41 +314,22 @@ class ProfileView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Competências',
-                style: labelTextStyle.copyWith(color: primaryInk, fontSize: 18),
-              ),
-              if (vm.isEditing)
-                IconButton(
-                  icon: const Icon(Icons.add, size: 20, color: gray_600),
-                  onPressed: vm.onAddSkillsTapped,
-                ),
-            ],
+          ProfileSectionHeader.instantiate(
+            viewModel: ProfileSectionHeaderViewModel(
+              title: 'Competências',
+              showAddButton: vm.isEditing,
+              onAddPressed: vm.onAddSkillsTapped,
+            ),
           ),
           SizedBox(height: extraSmall),
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: profile.skills.map((skill) => _buildSkillChip(skill)).toList(),
+            children: profile.skills.map((skill) => SkillChip.instantiate(
+              viewModel: SkillChipViewModel(text: skill),
+            )).toList(),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSkillChip(String skill) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: extraSmall, vertical: tripleXS + 2),
-      decoration: BoxDecoration(
-        color: blue_100,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Text(
-        skill,
-        style: label2Regular.copyWith(color: blue_600),
       ),
     );
   }
