@@ -26,8 +26,8 @@ class NotificationsService {
       NotificationModel(
         id: '3',
         type: 'comment',
-        title: 'Ana Costa comentou na sua publicação',
-        description: '"Parabéns pela conquista! Continue assim!"',
+        title: 'Silvano comentou na sua publicação',
+        description: '"Parabéns! Continue assim 👍',
         avatar: 'AC',
         timeAgo: '2h',
         isRead: false,
@@ -36,7 +36,7 @@ class NotificationsService {
         id: '4',
         type: 'job',
         title: 'Nova vaga para você',
-        description: 'Desenvolvedor Flutter Senior - Tech Corp',
+        description: 'Desenvolvedor Flutter junior - Tech Corp',
         avatar: '💼',
         timeAgo: '3h',
         isRead: true,
@@ -44,7 +44,7 @@ class NotificationsService {
       NotificationModel(
         id: '5',
         type: 'mention',
-        title: 'Pedro Oliveira mencionou você',
+        title: 'Thiago Oliveira mencionou você',
         description: '"@VictorHugo o que você acha dessa abordagem?"',
         avatar: 'PO',
         timeAgo: '5h',

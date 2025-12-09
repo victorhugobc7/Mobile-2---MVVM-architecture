@@ -70,8 +70,8 @@ class NetworkView extends StatelessWidget {
               title: invitation.title,
               avatarInitials: invitation.avatar,
               timeAgo: invitation.timeAgo,
-              onAcceptTapped: () => vm.acceptInvitation(invitation.id),
               onDeclineTapped: () => vm.declineInvitation(invitation.id),
+              delegate: vm,
             ),
           )),
         ],
@@ -109,7 +109,7 @@ class NetworkView extends StatelessWidget {
                     avatarInitials: connection.avatar,
                     mutualConnections: connection.mutualConnections,
                     isConnected: connection.isConnected,
-                    onConnectTapped: () => vm.toggleConnection(connection.id),
+                    delegate: vm,
                   ),
                 );
               },

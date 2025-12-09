@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../resources/shared/app_coordinator.dart';
+import '../../../DesignSystem/Components/ProfileHeader/profile_header_view_model.dart';
 import '../../jobPrediction/job_prediction_service.dart';
 import 'profile_service.dart';
 
@@ -55,7 +56,7 @@ class EducationModel {
   });
 }
 
-class ProfileViewModel extends ChangeNotifier {
+class ProfileViewModel extends ChangeNotifier implements ProfileHeaderDelegate {
   final AppCoordinator coordinator;
   final ProfileService service;
   final JobPredictionService _predictionService = JobPredictionService();
@@ -113,13 +114,15 @@ class ProfileViewModel extends ChangeNotifier {
   void onSearchTapped() {
   }
 
-  void onConnectTapped() {
+  @override
+  void onConnectPressed() {
   }
 
   void onSendMessageTapped() {
   }
 
-  void onAddSectionTapped() {
+  @override
+  void onAddSectionPressed() {
   }
 
   void onEditAboutTapped() {

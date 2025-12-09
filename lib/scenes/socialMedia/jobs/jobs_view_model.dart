@@ -3,6 +3,7 @@ import '../../../resources/shared/app_coordinator.dart';
 import '../../../DesignSystem/shared/colors.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import '../../../DesignSystem/Components/DSTabBar/ds_tab_bar_view_model.dart';
+import '../../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import 'jobs_service.dart';
 
 class JobModel {
@@ -124,6 +125,17 @@ class JobsViewModel extends ChangeNotifier {
   void applyToJob(String id) {
   }
 
+  ActionButtonViewModel getApplyButtonViewModel(String jobId) {
+    final buttonViewModel = ActionButtonViewModel(
+      size: ActionButtonSize.medium,
+      style: ActionButtonStyle.outline,
+      text: 'Candidatar-se',
+      isExpanded: true,
+    );
+    buttonViewModel.delegate = _ApplyButtonDelegate(this, jobId);
+    return buttonViewModel;
+  }
+
   void goBack() {
     coordinator.pop();
   }
@@ -156,5 +168,16 @@ class JobsViewModel extends ChangeNotifier {
       default:
         return gray_600;
     }
+  }
+}
+
+class _ApplyButtonDelegate implements ActionButtonDelegate {
+  final JobsViewModel viewModel;
+  final String jobId;
+  _ApplyButtonDelegate(this.viewModel, this.jobId);
+
+  @override
+  void buttonClicked() {
+    viewModel.applyToJob(jobId);
   }
 }

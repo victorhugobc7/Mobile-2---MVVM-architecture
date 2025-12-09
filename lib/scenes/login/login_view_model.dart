@@ -4,7 +4,7 @@ import '../../DesignSystem/Components/InputField/input_text_view_model.dart';
 import '../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import 'login_service.dart';
 
-class LoginViewModel extends ChangeNotifier {
+class LoginViewModel extends ChangeNotifier implements ActionButtonDelegate {
   final LoginService service;
   final AppCoordinator coordinator;
   
@@ -36,10 +36,16 @@ class LoginViewModel extends ChangeNotifier {
     style: ActionButtonStyle.primary,
     text: 'Login',
     icon: Icons.login,
-    onPressed: handleLogin,
   );
 
-  LoginViewModel({required this.service, required this.coordinator});
+  LoginViewModel({required this.service, required this.coordinator}) {
+    loginButtonViewModel.delegate = this;
+  }
+
+  @override
+  void buttonClicked() {
+    handleLogin();
+  }
 
   AppCoordinator get appCoordinator => coordinator;
 

@@ -99,8 +99,7 @@ class ProfileView extends StatelessWidget {
         isEditing: vm.isEditing,
         onSharePressed: vm.shareProfile,
         onEditToggle: vm.toggleEditing,
-        onConnectPressed: vm.onConnectTapped,
-        onAddSectionPressed: vm.onAddSectionTapped,
+        delegate: vm,
       ),
     );
   }

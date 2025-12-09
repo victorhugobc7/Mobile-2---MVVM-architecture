@@ -11,6 +11,7 @@ import '../../../DesignSystem/Components/CreatePostAppBar/create_post_app_bar.da
 import '../../../DesignSystem/Components/CreatePostAppBar/create_post_app_bar_view_model.dart';
 import '../../../DesignSystem/Components/SwitchButton/switch_button.dart';
 import '../../../DesignSystem/Components/SwitchButton/switch_button_viewmodel.dart';
+import '../../../DesignSystem/Components/VisibilitySelector/visibility_selector.dart';
 import 'create_post_view_model.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -78,24 +79,10 @@ class CreatePostView extends StatelessWidget {
                 vm.userName,
                 style: labelTextStyle.copyWith(color: primaryInk, fontSize: 16),
               ),
-              Container(
-                margin: EdgeInsets.only(top: tripleXS),
-                padding: EdgeInsets.symmetric(horizontal: doubleXS, vertical: tripleXS),
-                decoration: BoxDecoration(
-                  border: Border.all(color: gray_400),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.public, size: 14, color: gray_600),
-                    SizedBox(width: tripleXS),
-                    Text(
-                      'Qualquer pessoa',
-                      style: label2Regular.copyWith(color: gray_600),
-                    ),
-                    const Icon(Icons.arrow_drop_down, size: 16, color: gray_600),
-                  ],
+              SizedBox(height: tripleXS),
+              VisibilitySelector.instantiate(
+                viewModel: VisibilitySelectorViewModel(
+                  label: 'Qualquer pessoa',
                 ),
               ),
             ],

@@ -4,7 +4,6 @@ import '../../shared/colors.dart';
 import '../../shared/styles.dart';
 import '../../shared/spacing.dart';
 import '../Buttons/ActionButton/action_button.dart';
-import '../Buttons/ActionButton/action_button_view_model.dart';
 
 class InvitationCard extends StatelessWidget {
   final InvitationCardViewModel viewModel;
@@ -80,12 +79,7 @@ class InvitationCard extends StatelessWidget {
           onPressed: viewModel.onDeclineTapped,
         ),
         ActionButton.instantiate(
-          viewModel: ActionButtonViewModel(
-            size: ActionButtonSize.small,
-            style: ActionButtonStyle.primary,
-            text: 'Aceitar',
-            onPressed: viewModel.onAcceptTapped ?? () {},
-          ),
+          viewModel: viewModel.acceptButtonViewModel,
         ),
       ],
     );

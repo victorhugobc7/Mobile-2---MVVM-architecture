@@ -5,7 +5,6 @@ import '../../shared/spacing.dart';
 import '../Avatar/avatar.dart';
 import '../Avatar/avatar_view_model.dart';
 import '../Buttons/ActionButton/action_button.dart';
-import '../Buttons/ActionButton/action_button_view_model.dart';
 import 'profile_header_view_model.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -100,23 +99,13 @@ class ProfileHeader extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ActionButton.instantiate(
-                        viewModel: ActionButtonViewModel(
-                          size: ActionButtonSize.medium,
-                          style: ActionButtonStyle.primary,
-                          text: 'Aberto a',
-                          onPressed: viewModel.onConnectPressed ?? () {},
-                        ),
+                        viewModel: viewModel.connectButtonViewModel,
                       ),
                     ),
                     SizedBox(width: doubleXS),
                     Expanded(
                       child: ActionButton.instantiate(
-                        viewModel: ActionButtonViewModel(
-                          size: ActionButtonSize.medium,
-                          style: ActionButtonStyle.outline,
-                          text: 'Adicionar seção',
-                          onPressed: viewModel.onAddSectionPressed ?? () {},
-                        ),
+                        viewModel: viewModel.addSectionButtonViewModel,
                       ),
                     ),
                   ],

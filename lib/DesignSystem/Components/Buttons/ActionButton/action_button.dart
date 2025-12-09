@@ -44,18 +44,20 @@ class _ActionButtonState extends State<ActionButton> {
 
     if (isOutlineStyle) {
       // Outline button with focus ring effect (2px gap + 2px border)
+      // Always reserve space for the focus ring to prevent displacement
       button = MouseRegion(
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
         child: Focus(
           onFocusChange: (focused) => setState(() => _isFocused = focused),
           child: Container(
-            decoration: _isHighlighted
-                ? BoxDecoration(
-                    border: Border.all(color: buttonColor, width: 2),
-                  )
-                : null,
-            padding: _isHighlighted ? const EdgeInsets.all(2) : null,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: _isHighlighted ? buttonColor : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            padding: const EdgeInsets.all(2),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               decoration: BoxDecoration(
@@ -65,7 +67,7 @@ class _ActionButtonState extends State<ActionButton> {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: viewModel.onPressed,
+                  onTap: () => viewModel.delegate?.buttonClicked(),
                   child: Padding(
                     padding: padding,
                     child: _buildButtonContent(textColor),
@@ -77,7 +79,7 @@ class _ActionButtonState extends State<ActionButton> {
         ),
       );
     } else {
-      // Filled button - darkens on hover
+      // Filled button - darkens on hover, no outline ring
       button = MouseRegion(
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
@@ -91,7 +93,7 @@ class _ActionButtonState extends State<ActionButton> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: viewModel.onPressed,
+                onTap: () => viewModel.delegate?.buttonClicked(),
                 child: Padding(
                   padding: padding,
                   child: _buildButtonContent(textColor),

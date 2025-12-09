@@ -3,6 +3,8 @@ import '../../../resources/shared/app_coordinator.dart';
 import '../../../DesignSystem/shared/colors.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar_view_model.dart';
 import '../../../DesignSystem/Components/StatCard/stat_card_view_model.dart';
+import '../../../DesignSystem/Components/InvitationCard/invitation_card_view_model.dart';
+import '../../../DesignSystem/Components/ConnectionCard/connection_card_view_model.dart';
 import 'network_service.dart';
 
 class ConnectionModel {
@@ -39,7 +41,7 @@ class InvitationModel {
   });
 }
 
-class NetworkViewModel extends ChangeNotifier {
+class NetworkViewModel extends ChangeNotifier implements InvitationCardDelegate, ConnectionCardDelegate {
   final AppCoordinator coordinator;
   final NetworkService service;
 
@@ -109,6 +111,16 @@ class NetworkViewModel extends ChangeNotifier {
       _suggestions[index].isConnected = !_suggestions[index].isConnected;
       notifyListeners();
     }
+  }
+
+  @override
+  void onConnectTapped(String id) {
+    toggleConnection(id);
+  }
+
+  @override
+  void onAcceptTapped(String id) {
+    acceptInvitation(id);
   }
 
   void acceptInvitation(String id) {

@@ -33,7 +33,6 @@ class NotificationsViewModel extends ChangeNotifier {
   List<NotificationModel> _notifications = [];
   bool _isLoading = false;
 
-  // Component ViewModels
   SimpleAppBarViewModel get appBarViewModel => SimpleAppBarViewModel(
     title: 'Notificações',
     onBackPressed: goBack,

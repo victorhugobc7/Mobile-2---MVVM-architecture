@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_view_model.dart';
 import '../../DesignSystem/Components/Buttons/ActionButton/action_button.dart';
-import '../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import '../../DesignSystem/shared/colors.dart';
 import '../../DesignSystem/shared/styles.dart';
 import '../../DesignSystem/shared/spacing.dart';
@@ -62,13 +61,7 @@ class HomeView extends StatelessWidget {
 
             Center(
               child: ActionButton.instantiate(
-                viewModel: ActionButtonViewModel(
-                  size: ActionButtonSize.large,
-                  style: ActionButtonStyle.secondary,
-                  text: 'Logout',
-                  icon: Icons.exit_to_app,
-                  onPressed: viewModel.logout,
-                ),
+                viewModel: viewModel.logoutButtonViewModel,
               ),
             ),
             SizedBox(height: medium),

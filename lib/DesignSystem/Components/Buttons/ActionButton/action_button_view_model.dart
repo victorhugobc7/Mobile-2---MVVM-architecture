@@ -16,6 +16,10 @@ enum ActionButtonStyle {
   outlineSuccess,
 }
 
+abstract class ActionButtonDelegate {
+  void buttonClicked();
+}
+
 class ActionButtonViewModel {
   final ActionButtonSize size;
   final ActionButtonStyle style;
@@ -23,13 +27,13 @@ class ActionButtonViewModel {
   final IconData? icon;
   final bool showIcon;
   final bool isExpanded;
-  final Function() onPressed;
+  ActionButtonDelegate? delegate;
 
   ActionButtonViewModel({
     required this.size,
     required this.style,
     required this.text,
-    required this.onPressed,
+    this.delegate,
     this.icon,
     this.showIcon = false,
     this.isExpanded = false,

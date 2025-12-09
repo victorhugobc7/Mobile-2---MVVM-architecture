@@ -12,7 +12,6 @@ import '../../../DesignSystem/Components/Tag/tag_view_model.dart';
 import '../../../DesignSystem/Components/SimpleAppBar/simple_app_bar.dart';
 import '../../../DesignSystem/Components/DSTabBar/ds_tab_bar.dart';
 import '../../../DesignSystem/Components/Buttons/ActionButton/action_button.dart';
-import '../../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import 'jobs_view_model.dart';
 
 class JobsView extends StatelessWidget {
@@ -51,21 +50,22 @@ class JobsView extends StatelessWidget {
   Widget _buildFilters(JobsViewModel vm) {
     return Container(
       color: white,
-      padding: EdgeInsets.symmetric(vertical: extraSmall),
+      padding: EdgeInsets.symmetric(horizontal: small, vertical: extraSmall),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: Wrap(
-          spacing: doubleXS,
+        child: Row(
           children: vm.filters.map((filter) {
             final isSelected = vm.selectedFilter == filter;
-            return StyledFilterChip.instantiate(
+            return Padding(
+              padding: EdgeInsets.only(right: doubleXS),
+              child: StyledFilterChip.instantiate(
                 viewModel: FilterChipViewModel(
                   label: filter,
                   isSelected: isSelected,
                   onSelected: (_) => vm.setFilter(filter),
                 ),
-              );
+              ),
+            );
           }).toList(),
         ),
       ),
@@ -201,13 +201,7 @@ class JobsView extends StatelessWidget {
           ),
           SizedBox(height: extraSmall),
           ActionButton.instantiate(
-            viewModel: ActionButtonViewModel(
-              size: ActionButtonSize.medium,
-              style: ActionButtonStyle.outline,
-              text: 'Candidatar-se',
-              isExpanded: true,
-              onPressed: () => vm.applyToJob(job.id),
-            ),
+            viewModel: vm.getApplyButtonViewModel(job.id),
           ),
         ],
       ),

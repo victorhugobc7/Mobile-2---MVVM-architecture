@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../resources/shared/app_coordinator.dart';
+import '../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import 'job_prediction_service.dart';
 
 class JobPredictionViewModel extends ChangeNotifier {
@@ -29,7 +30,24 @@ class JobPredictionViewModel extends ChangeNotifier {
   final List<String> jobTypes = ['data scientist', 'data engineer', 'analyst', 'machine learning', 'manager', 'director'];
   final List<String> seniorityLevels = ['na', 'junior', 'senior', 'lead', 'principal'];
 
-  JobPredictionViewModel({required this.service, required this.coordinator});
+  // Button ViewModels
+  late final ActionButtonViewModel predictButtonViewModel = ActionButtonViewModel(
+    size: ActionButtonSize.large,
+    style: ActionButtonStyle.primary,
+    text: 'Prever Salário',
+    icon: Icons.calculate,
+  );
+
+  late final ActionButtonViewModel clearButtonViewModel = ActionButtonViewModel(
+    size: ActionButtonSize.medium,
+    style: ActionButtonStyle.secondary,
+    text: 'Limpar',
+  );
+
+  JobPredictionViewModel({required this.service, required this.coordinator}) {
+    predictButtonViewModel.delegate = _PredictButtonDelegate(this);
+    clearButtonViewModel.delegate = _ClearButtonDelegate(this);
+  }
 
   bool get sameState => _sameState;
   bool get pythonYn => _pythonYn;
@@ -146,5 +164,27 @@ class JobPredictionViewModel extends ChangeNotifier {
     companyAgeController.dispose();
     numCompController.dispose();
     super.dispose();
+  }
+}
+
+class _PredictButtonDelegate implements ActionButtonDelegate {
+  final JobPredictionViewModel viewModel;
+  _PredictButtonDelegate(this.viewModel);
+
+  @override
+  void buttonClicked() {
+    if (!viewModel.isLoading) {
+      viewModel.predictSalary();
+    }
+  }
+}
+
+class _ClearButtonDelegate implements ActionButtonDelegate {
+  final JobPredictionViewModel viewModel;
+  _ClearButtonDelegate(this.viewModel);
+
+  @override
+  void buttonClicked() {
+    viewModel.clearForm();
   }
 }

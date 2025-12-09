@@ -4,7 +4,6 @@ import 'job_prediction_view_model.dart';
 import '../../DesignSystem/Components/InputField/input_text.dart';
 import '../../DesignSystem/Components/InputField/input_text_view_model.dart';
 import '../../DesignSystem/Components/Buttons/ActionButton/action_button.dart';
-import '../../DesignSystem/Components/Buttons/ActionButton/action_button_view_model.dart';
 import '../../DesignSystem/Components/Cards/ActionCard/action_card.dart';
 import '../../DesignSystem/Components/Cards/ActionCard/action_card_view_model.dart';
 import '../../DesignSystem/Components/Checkbox/checkbox.dart';
@@ -177,22 +176,11 @@ class JobPredictionView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ActionButton.instantiate(
-                        viewModel: ActionButtonViewModel(
-                          size: ActionButtonSize.large,
-                          style: ActionButtonStyle.primary,
-                          text: 'Prever Salário',
-                          icon: Icons.calculate,
-                          onPressed: vm.isLoading ? () {} : vm.predictSalary,
-                        ),
+                        viewModel: vm.predictButtonViewModel,
                       ),
                       SizedBox(width: small),
                       ActionButton.instantiate(
-                        viewModel: ActionButtonViewModel(
-                          size: ActionButtonSize.medium,
-                          style: ActionButtonStyle.secondary,
-                          text: 'Limpar',
-                          onPressed: vm.clearForm,
-                        ),
+                        viewModel: vm.clearButtonViewModel,
                       ),
                     ],
                   ),
