@@ -16,8 +16,9 @@ import 'jobs_view_model.dart';
 
 class JobsView extends StatelessWidget {
   final JobsViewModel viewModel;
+  final bool showBottomNav;
 
-  const JobsView({super.key, required this.viewModel});
+  const JobsView({super.key, required this.viewModel, this.showBottomNav = true});
 
   @override
   Widget build(BuildContext context) {

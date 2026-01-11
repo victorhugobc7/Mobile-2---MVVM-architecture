@@ -5,9 +5,9 @@ import 'feed_service.dart';
 import '../../../resources/shared/app_coordinator.dart';
 
 class FeedFactory {
-  static Widget make({required AppCoordinator coordinator}) {
+  static Widget make({required AppCoordinator coordinator, bool showBottomNav = true}) {
     final service = FeedService();
     final viewModel = FeedViewModel(coordinator: coordinator, service: service);
-    return FeedView(viewModel: viewModel);
+    return FeedView(viewModel: viewModel, showBottomNav: showBottomNav);
   }
 }

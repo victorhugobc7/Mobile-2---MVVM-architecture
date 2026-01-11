@@ -15,8 +15,9 @@ import 'network_view_model.dart';
 
 class NetworkView extends StatelessWidget {
   final NetworkViewModel viewModel;
+  final bool showBottomNav;
 
-  const NetworkView({super.key, required this.viewModel});
+  const NetworkView({super.key, required this.viewModel, this.showBottomNav = true});
 
   @override
   Widget build(BuildContext context) {

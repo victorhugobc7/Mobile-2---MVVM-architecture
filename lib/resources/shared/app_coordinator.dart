@@ -9,6 +9,7 @@ import '../../scenes/socialMedia/messages/messages_factory.dart';
 import '../../scenes/socialMedia/notifications/notifications_factory.dart';
 import '../../scenes/socialMedia/createPost/create_post_factory.dart';
 import '../../scenes/socialMedia/jobs/jobs_factory.dart';
+import '../../scenes/socialMedia/shell/main_shell_factory.dart';
 
 class AppCoordinator {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -24,13 +25,13 @@ class AppCoordinator {
   }
 
   Widget goToFeedAsHome() {
-    return FeedFactory.make(coordinator: this);
+    return MainShellFactory.make(coordinator: this);
   }
 
   void goToFeedFromLogin() {
     _navigator?.pushReplacement(
       MaterialPageRoute(
-        builder: (_) => FeedFactory.make(coordinator: this),
+        builder: (_) => MainShellFactory.make(coordinator: this),
       ),
     );
   }

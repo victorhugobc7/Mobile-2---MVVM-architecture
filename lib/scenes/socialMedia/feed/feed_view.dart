@@ -14,8 +14,9 @@ import 'feed_view_model.dart';
 
 class FeedView extends StatelessWidget {
   final FeedViewModel viewModel;
+  final bool showBottomNav;
 
-  const FeedView({super.key, required this.viewModel});
+  const FeedView({super.key, required this.viewModel, this.showBottomNav = true});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class FeedView extends StatelessWidget {
                       ),
                     ),
                   ),
-            bottomNavigationBar: _buildBottomNav(vm),
+            bottomNavigationBar: showBottomNav ? _buildBottomNav(vm) : null,
           );
         },
       ),

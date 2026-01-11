@@ -35,7 +35,6 @@ class NotificationsViewModel extends ChangeNotifier {
 
   SimpleAppBarViewModel get appBarViewModel => SimpleAppBarViewModel(
     title: 'Notificações',
-    onBackPressed: goBack,
     actions: [
       if (unreadCount > 0)
         TextButton(

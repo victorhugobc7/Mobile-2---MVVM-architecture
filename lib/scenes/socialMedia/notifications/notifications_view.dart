@@ -9,8 +9,9 @@ import 'notifications_view_model.dart';
 
 class NotificationsView extends StatelessWidget {
   final NotificationsViewModel viewModel;
+  final bool showBottomNav;
 
-  const NotificationsView({super.key, required this.viewModel});
+  const NotificationsView({super.key, required this.viewModel, this.showBottomNav = true});
 
   @override
   Widget build(BuildContext context) {

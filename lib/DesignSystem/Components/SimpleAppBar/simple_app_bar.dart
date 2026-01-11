@@ -22,10 +22,13 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: viewModel.foregroundColor ?? primaryInk,
       elevation: viewModel.elevation ?? 0,
       centerTitle: viewModel.centerTitle,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: viewModel.onBackPressed ?? () => Navigator.of(context).pop(),
-      ),
+      automaticallyImplyLeading: false,
+      leading: viewModel.onBackPressed != null
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: viewModel.onBackPressed,
+            )
+          : null,
       title: Text(
         viewModel.title,
         style: title4.copyWith(

@@ -59,13 +59,13 @@ class FeedViewModel extends ChangeNotifier {
     icon: Icons.home_filled,
     label: 'Início',
     isActive: true,
-    onTap: onHomeTapped,
+    onTap: () {}, // Handled by shell
   );
 
   late final NavItemViewModel networkNavViewModel = NavItemViewModel(
     icon: Icons.people_outline,
     label: 'Rede',
-    onTap: goToNetwork,
+    onTap: () {}, // Handled by shell
   );
 
   late final NavItemViewModel postNavViewModel = NavItemViewModel(
@@ -77,13 +77,13 @@ class FeedViewModel extends ChangeNotifier {
   late final NavItemViewModel notificationsNavViewModel = NavItemViewModel(
     icon: Icons.notifications_outlined,
     label: 'Notificações',
-    onTap: goToNotifications,
+    onTap: () {}, // Handled by shell
   );
 
   late final NavItemViewModel jobsNavViewModel = NavItemViewModel(
     icon: Icons.work_outline,
     label: 'Vagas',
-    onTap: goToJobs,
+    onTap: () {}, // Handled by shell
   );
 
   FeedViewModel({required this.coordinator, required this.service}) {
@@ -137,32 +137,16 @@ class FeedViewModel extends ChangeNotifier {
     
   }
 
-  void onHomeTapped() {
-    
-  }
-
   void goToProfile() {
     coordinator.goToProfile();
-  }
-
-  void goToNetwork() {
-    coordinator.goToNetwork();
   }
 
   void goToMessages() {
     coordinator.goToMessages();
   }
 
-  void goToNotifications() {
-    coordinator.goToNotifications();
-  }
-
   void goToCreatePost() {
     coordinator.goToCreatePost();
-  }
-
-  void goToJobs() {
-    coordinator.goToJobs();
   }
 
   void logout() {

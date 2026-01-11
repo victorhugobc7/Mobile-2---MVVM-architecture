@@ -47,7 +47,6 @@ class JobsViewModel extends ChangeNotifier {
   // Component ViewModels
   late final SimpleAppBarViewModel appBarViewModel = SimpleAppBarViewModel(
     title: 'Vagas',
-    onBackPressed: goBack,
     actions: [
       IconButton(
         icon: const Icon(Icons.tune, color: gray_600),

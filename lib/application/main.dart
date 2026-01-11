@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     final coordinator = AppCoordinator();
 
     return MaterialApp(
-      title: 'aplicativo massa',
+      title: 'Job App',
       navigatorKey: coordinator.navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

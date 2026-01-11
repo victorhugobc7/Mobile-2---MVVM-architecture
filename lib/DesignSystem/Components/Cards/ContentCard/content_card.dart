@@ -6,7 +6,7 @@ import '../../../../resources/shared/colors.dart';
 class ContentCard extends StatefulWidget {
   final ContentCardViewModel viewModel;
 
-  const ContentCard._({super.key, required this.viewModel});
+  const ContentCard._({required this.viewModel});
 
   static Widget instantiate({required ContentCardViewModel viewModel}) {
     return ContentCard._(viewModel: viewModel);

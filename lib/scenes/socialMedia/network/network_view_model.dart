@@ -53,7 +53,6 @@ class NetworkViewModel extends ChangeNotifier implements InvitationCardDelegate,
   // Component ViewModels
   late final SimpleAppBarViewModel appBarViewModel = SimpleAppBarViewModel(
     title: 'Minha rede',
-    onBackPressed: goBack,
     actions: [
       IconButton(
         icon: const Icon(Icons.search, color: gray_600),
